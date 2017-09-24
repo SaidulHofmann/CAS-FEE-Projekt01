@@ -1,0 +1,19 @@
+{
+  "name": "CAS-FEE-Projekt01",
+  "version": "0.0.1",
+  "description": "CAS-FEE-Projekt01",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SaidulHofmann/CAS-FEE-Projekt01.git"
+  },
+  "author": "Saidul Hofmann",
+  "license": "MIT",
+  "homepage": "https://github.com/SaidulHofmann/CAS-FEE-Projekt01.git",
+  "dependencies": {
+    "serve": "^6.1.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}

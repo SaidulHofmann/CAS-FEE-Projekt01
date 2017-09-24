@@ -1,0 +1,54 @@
+/* CSS Style Sheet 01 für CAS-FEE Projekt 01. */
+body {
+    font-size: 1.5em;
+}
+
+header,
+main,
+aside,
+footer {
+    display: block; /* ältere Browser */
+}
+
+.header {
+    padding: 1em;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+    background: lightgoldenrodyellow;
+}
+.content {
+    background: white;
+}
+.nav {
+    box-sizing: border-box;
+    padding: 1em;
+    width: 20%;
+}
+.main {
+    box-sizing: border-box;
+    padding: 1em;
+    width: 60%;
+}
+.sidebar {
+    box-sizing: border-box;
+    padding: 1em;
+    width: 20%;
+}
+.footer {
+    padding: 1em;
+    background: lightgoldenrodyellow;
+}
+
+
+/* Ansatz 5: "display: flex" (optimiert) */
+
+.content {
+    display: -webkit-box;  /* OLD: Chrome <=20, iOS <=6,
+                            Safari <=6 */
+    display: -moz-box;     /* OLD: Firefox <=21 */
+    display: -ms-flexbox;  /* TWEENER: IE 10 */
+    display: -webkit-flex; /* NEW: Chrome 21-28 */
+    display: flex;         /* NEW (Spec): Chrome >=29,
+                            Firefox >=22, IE >=11 */
+}
