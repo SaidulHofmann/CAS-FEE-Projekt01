@@ -8,14 +8,44 @@
 </head>
 
 <body>
-    <header class="header">Notizen Verwaltung - CAS Projekt 01</header>
+    <header class="header">
+
+    <div class="header-item header-title">
+        <p>Notizen Verwaltung - CAS Projekt 01</p>
+    </div>
+
+    <div class="header-item">
+        <button type="button" class="newNoteButton">Create new Note</button>
+
+        <div class="dropdown">
+            <button class="dropbtn">Select Style &#9662;</button>
+            <div class="dropdown-content">
+                <a href="#">Stylesheet 01</a>
+                <a href="#">Stylesheet 02</a>
+                <a href="#">Stylesheet 03</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-item">
+        <button class="orderButtons" type="button">By finish Date</button>
+        <button class="orderButtons" type="button">By created Date</button>
+        <button class="orderButtons" type="button">By Importance</button>
+        <button class="filterButtons" type="button">Show finished</button>
+    </div>
+
+    </header>
 
     <div class="content">
-        <nav class="nav">Navigation</nav>
-
-        <main class="main">Content</main>
-
-        <aside class="sidebar">Sidebar</aside>
+        <main class="main">
+            <label for="notesCount">Anzahl Notizen: </label>
+            <div id="notesCount"></div><br>
+            <label for="notes">Notizen: </label>
+            <div id="notes"></div>
+            <br>
+            <a href="edit-note.html">Neuen Eintrag erstellen</a>
+            <script src="js/main.js"></script>
+        </main>
     </div>
 
     <footer class="footer">Footer</footer>
