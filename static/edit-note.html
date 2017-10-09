@@ -5,8 +5,22 @@
     <title>Notiz editieren</title>
 </head>
 <body>
+<label for="title">Titel</label><input type="text" id="title"><br>
+<label for="description">Beschreibung</label><input type="text" id="description"><br>
+<label for="importance">Wichtigkeit</label>
+<form>
+    <input type="radio" name="1" value="1" checked>1
+    <input type="radio" name="2" value="2">2
+    <input type="radio" name="3" value="3">3
+    <input type="radio" name="4" value="4">4
+    <input type="radio" name="5" value="5">5
+</form><br>
+<input type="text" id="importance"><br>
+
 Notiz: <input id="note">
-<script src="js/main.js"></script>
+
 <button onclick="addNote()">Senden</button>
+<button onclick="cancelNote()">Abbrechen</button>
+<script src="js/main.js"></script>
 </body>
 </html>

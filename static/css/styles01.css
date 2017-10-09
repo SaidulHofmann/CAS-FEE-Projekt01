@@ -55,7 +55,7 @@ body {
     border: 3px solid #a1a1a1;
 }
 
-.newNoteButton {
+#btnCreateNewNote {
 /*    float: left; */
 }
 
