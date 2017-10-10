@@ -1,7 +1,7 @@
 'use strict';
 /*
 Project: HSR CAS FEE 2017
-Content: Javascript  for note application.
+Content: Commmon Javascript for the note application.
 Created on: 02.10.2017
 Author: Saidul Hofmann
  */
@@ -35,12 +35,12 @@ class Note {
 class Model {
     constructor() {
         this.storage = window.localStorage;
-        this.notes = createNotesStorage();
+        this.notes = this.reloadNotesFromStorage();
         this.currentSortOrder = SortDataEnum.BY_IMPORTANCE();
         this.filterByFinished = false;
     }
 
-    createNotesStorage(){
+    reloadNotesFromStorage(){
         let notesJsonObj = window.localStorage.getItem("notesJsonObj");
         if(!notesJsonObj){
             localStorage.setItem("notesJsonObj", JSON.stringify([]));
@@ -64,7 +64,8 @@ class Model {
         if(!note instanceof Note) {
             throw "saveNote(note): Es wurde kein gültiges Notiz Objekt übergeben.";
         }
-        this.storage.setItem(id, JSON.stringify(note));
+        this.storage.setItem(note.id, JSON.stringify(note));
+			  this.reloadNotesFromStorage();
     }
 
     getAllNotes() {
@@ -119,15 +120,21 @@ class Controller {
         this.model = model;
 
         // Access to View
+        // app.html
         this.btnCreateNewNote = null;
         this.btnSortByFinishDate = null;
         this.btnSortByCreateDate = null;
         this.btnSortByImportance = null;
         this.btnFilterByFinished = null;
         this.currentStyleSheet = "";
+
+        // edit-note.html
+          this.btnSaveNote = null;
+          this.btnCancelNote = null;
     }
 
-    bootstrap(){
+    bootstrapApp(){
+/*
         this.btnSortByCreateDate.onclick = (e) => {
             this.model.setSortOrderByCreateDate();
             renderUI();
@@ -144,10 +151,32 @@ class Controller {
             this.model.toggleFilterByFinished();
             renderUI();
         }
+*/
+    }
+
+    bootstrapEditNote(){
+        this.btnSaveNote.onclick = (e) => {
+            console.log("Controller.bootstrapEditNote() executed.");
+        }
+        this.btnCancelNote.onclick = (e) => {
+					console.log("Controller.bootstrapEditNote() executed.");
+				}
+    }
+
+    addNote(note){
+        console.log("Controller.addNote() executed. ", note);
+        // Validate
+        // Check if note already exists.
+
+      // Save note.
+        this.model.saveNote(note);
+			  window.location.replace("app.html");
+			  this.renderUI();
     }
 
     renderUI(){
-
+        document.getElementById("notesCount").innerText = this.model.notes.length();
+        //document.getElementById("notes").innerHTML = notes.length == 0 ? "Keine Notizen vorhanden." : notes.join("</br>"); //temporary solution.
     }
 
 }
@@ -181,6 +210,7 @@ function addNote(){
 // Global variables
 // ****************************************************************************
 
+/* Test
 // Create notes array in session storage.
 let notes = sessionStorage.getItem("notes");
 if(!notes){
@@ -188,12 +218,14 @@ if(!notes){
     notes = sessionStorage.getItem("notes");
 }
 notes = JSON.parse(notes);
+*/
 
 
+// Initialisations before the DOM has been fully loaded and parsed.
+// ****************************************************************************
 
-
-
-
+var model = new Model();
+var controller = new Controller(model);
 
 
 
@@ -201,18 +233,12 @@ notes = JSON.parse(notes);
 // ****************************************************************************
 document.addEventListener('DOMContentLoaded', () => {
 
-    let model = new Model();
-    let controller = new Controller(model);
-
     // Bootstrapping
-    controller.btnCreateNewNote = document.getElementById('btnCreateNewNote');
-    controller.btnSortByFinishDate = document.getElementById('btnSortByFinishDate');
-    controller.btnSortByCreateDate = document.getElementById('btnSortByCreateDate');
-    controller.btnSortByImportance = document.getElementById('btnSortByImportance');
-    controller.btnFilterByFinished = document.getElementById('btnFilterByFinished');
 
+/* Test
     // Display notes.
-    document.getElementById("notesCount").innerText = notes.length;
-    document.getElementById("notes").innerHTML = notes.length == 0 ? "Keine Notizen vorhanden." : notes.join("</br>"); //temporary solution.
+//    document.getElementById("notesCount").innerText = notes.length;
+//    document.getElementById("notes").innerHTML = notes.length == 0 ? "Keine Notizen vorhanden." : notes.join("</br>"); //temporary solution.
+*/
 
 });
