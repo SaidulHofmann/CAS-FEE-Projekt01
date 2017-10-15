@@ -7,24 +7,18 @@
 }
 
 body {
-    font-size: 1.5em;
+    font-size: 1.1em;
 }
 
-.header {
+header {
     display: flex;
     flex-direction: column;
-    padding: 5px;
+    padding: 10px;
     border: 3px solid #a1a1a1;
     background: lightgoldenrodyellow;
 }
 
-.header-item {
-    display: flex;
-    justify-content: flex-start;
-    margin: 5px;
-}
-
-.header-title {
+header p {
     align-self: center;
     font-size: 1em;
     font-weight: bold;
@@ -34,13 +28,27 @@ body {
     display: flex;
     background: white;
 }
-.nav {
-    padding: 1em;
-    width: 20%;
+
+#sortAndFilterButtons {
+    display: flex;
+    justify-content: flex-start;
+    background: whitesmoke;
+    border: 3px solid #a1a1a1;
+    padding: 10px;
 }
-.main {
-    padding: 1em;
-    width: 100%;
+
+nav {
+    display: flex;
+    justify-content: flex-start;
+    background: lightgoldenrodyellow;
+    border-left: 3px solid #a1a1a1;
+    border-right: 3px solid #a1a1a1;
+    border-bottom: 3px solid #a1a1a1;
+    padding: 10px;
+}
+
+main {
+    padding: 10px;
     border-style: solid;
     border-width: 0px 3px;
     border-color: #a1a1a1;
@@ -50,8 +58,8 @@ body {
     width: 20%;
 }
 .footer {
-    padding: 1em;
-    background: lightgoldenrodyellow;
+    padding: 5px;
+    background: whitesmoke;
     border: 3px solid #a1a1a1;
 }
 
@@ -67,45 +75,8 @@ body {
     margin-left: 20px;
 }
 
-.dropbtn {
-    background-color: #e1e1e1;
-/*    color: white; */
-    padding: 4px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-}
-
-.dropdown {
+.drpSelectStyle {
     display: inline-block;
     position: absolute;
     right: 20px;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 200px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    font-size: 0.7em;
-    text-align: left;
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown-content a:hover {background-color: #e1e1e1}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.dropdown:hover .dropbtn {
-    background-color: darkgrey;
 }

@@ -7,49 +7,80 @@
 </head>
 
 <body>
-    <header class="header">
 
+<header class="header">
     <div class="header-item header-title">
         <p>Notizen Verwaltung - CAS Projekt 01</p>
     </div>
+</header>
 
-    <div class="header-item">
-        <button type="button" id="btnCreateNewNote">Create new Note</button>
+<nav>
+    <button type="button" id="btnCreateNewNote">Neue Notiz erstellen</button>
 
-        <div class="dropdown">
-            <button class="dropbtn">Select Style &#9662;</button>
-            <div class="dropdown-content">
-                <a href="#">Stylesheet 01</a>
-                <a href="#">Stylesheet 02</a>
-                <a href="#">Stylesheet 03</a>
-            </div>
-        </div>
+    <select id="drpSelectStyle" name="drpSelectStyle">
+        <option value="StyleSheet01">Stylesheet 01</option>
+        <option value="StyleSheet02">Stylesheet 02</option>
+        <option value="StyleSheet03">Stylesheet 03</option>
+    </select>
+</nav>
+
+<main>
+
+</main>
+
+<footer class="footer">Footer</footer>
+
+<script src="js/jquery-3.2.1.js"></script>
+<script src="js/handlebars-v4.0.10.js"></script>
+<script type="module" src="js/data.js"></script>
+<script type="module" src="js/model.js"></script>
+<script type="module" src="js/view.js"></script>
+<script type="module" src="js/controller.js"></script>
+
+<script id="list-notes-template" type="text/x-handlebars-template">
+    <div id ="sortAndFilterButtons">
+        <button id="btnSortByFinishDate" class="orderButtons" type="button">Nach Abschlussdatum</button>
+        <button id="btnSortByCreateDate" class="orderButtons" type="button">Nach Erstelldatum</button>
+        <button id="btnSortByImportance" class="orderButtons" type="button">Nach Wichtigkeit</button>
+        <button id="btnFilterByFinished" class="filterButtons" type="button">Abgeschlossene</button>
+    </div><br>
+
+    {{#each notes}}
+    <div>
+        <span id="list-finishDate">Erledigt bis: {{this.finishDate}}</span>
+        <span id="list-title">Titel: {{this.title}}</span>
+        <span id="list-importance">Wichtigkeit: {{this.importance}}</span>
+        <br>
+        <span id="list-finished"><input type="checkbox" data-finished-id="{{this.id}}">Erledigt</span>
+        <span><textarea rows="4" cols="50">{{this.description}}</textarea></span>
+        <span id="list-btnEdit"><button type="button" data-edit-id="{{this.id}}">Ändern</button></span>
+        <br>
+        <br>
     </div>
+    {{/each}}
+</script>
 
-    <div class="header-item">
-        <button id="btnSortByFinishDate" class="orderButtons" type="button">By finish Date</button>
-        <button id="btnSortByCreateDate" class="orderButtons" type="button">By created Date</button>
-        <button id="btnSortByImportance" class="orderButtons" type="button">By Importance</button>
-        <button id="btnFilterByFinished" class="filterButtons" type="button">Show finished</button>
-    </div>
+<script id="edit-note-template" type="text/x-handlebars-template">
+    <form id="frmEditNote">
+        <span><label for="inpTitle">Titel</label><input type="text" id="inpTitle"><br><br></span>
+        <br>
+        <span><label for="txaDescription">Beschreibung</label><textarea id="txaDescription" rows="5" cols="30"></textarea></span>
+        <br><br>
+        <span><label for="frmImportance">Wichtigkeit</label>
+        <form id="frmImportance">
+            <input type="radio" name="importance" id="inpImportance1" value="1" checked>1
+            <input type="radio" name="importance" id="inpImportance2" value="2">2
+            <input type="radio" name="importance" id="inpImportance3" value="3">3
+            <input type="radio" name="importance" id="inpImportance4" value="4">4
+            <input type="radio" name="importance" id="inpImportance5" value="5">5
+        </form></span>
+        <br>
+        <span><label for="inpFinishDate">Erledigt bis</label><input type="date" id="inpFinishDate"></span>
+                <br><br>
+        <button id="btnSaveNote">Speichern</button>
+        <button id="btnCancelNote">Abbrechen</button>
+    </form>
+</script>
 
-    </header>
-
-    <div class="content">
-        <main class="main">
-            <label for="notesCount">Anzahl Notizen: </label>
-            <div id="notesCount"></div><br>
-            <label for="notes">Notizen: </label>
-            <div id="notes"></div>
-            <br>
-            <a href="edit-note.html">Neuen Eintrag erstellen</a>
-        </main>
-    </div>
-
-    <footer class="footer">Footer</footer>
-
-    <script src="jquery-3.2.1.js"></script>
-    <script src="js/handlebars-v4.0.10.js"></script>
-    <script src="js/main.js"></script>
 </body>
 </html>
