@@ -51,9 +51,11 @@
         <span id="list-title">Titel: {{this.title}}</span>
         <span id="list-importance">Wichtigkeit: {{this.importance}}</span>
         <br>
-        <span id="list-finished"><input type="checkbox" data-finished-id="{{this.id}}">Erledigt</span>
+        <span id="list-ckbFinishNote">
+            <input type="checkbox" data-finish-note-id="{{this.id}}" {{#if this.finished }} checked{{/if}}>Erledigt
+        </span>
         <span><textarea rows="4" cols="50">{{this.description}}</textarea></span>
-        <span id="list-btnEdit"><button type="button" data-edit-id="{{this.id}}">Ändern</button></span>
+        <span id="list-btnEditNote"><button type="button" data-edit-note-id="{{this.id}}">Ändern</button></span>
         <br>
         <br>
     </div>
@@ -62,21 +64,30 @@
 
 <script id="edit-note-template" type="text/x-handlebars-template">
     <form id="frmEditNote">
-        <span><label for="inpTitle">Titel</label><input type="text" id="inpTitle"><br><br></span>
-        <br>
-        <span><label for="txaDescription">Beschreibung</label><textarea id="txaDescription" rows="5" cols="30"></textarea></span>
-        <br><br>
-        <span><label for="frmImportance">Wichtigkeit</label>
-        <form id="frmImportance">
-            <input type="radio" name="importance" id="inpImportance1" value="1" checked>1
-            <input type="radio" name="importance" id="inpImportance2" value="2">2
-            <input type="radio" name="importance" id="inpImportance3" value="3">3
-            <input type="radio" name="importance" id="inpImportance4" value="4">4
-            <input type="radio" name="importance" id="inpImportance5" value="5">5
-        </form></span>
-        <br>
-        <span><label for="inpFinishDate">Erledigt bis</label><input type="date" id="inpFinishDate"></span>
-                <br><br>
+        <span>
+            <label for="inpId" hidden>Id</label>
+            <input type="text" id="inpId" value="{{this.id}}" hidden><br><br>
+            <label for="inpTitle">Titel</label>
+            <input type="text" id="inpTitle" value="{{this.title}}"><br><br>
+        </span><br>
+        <span>
+            <label for="txaDescription">Beschreibung</label>
+            <textarea id="txaDescription" rows="5" cols="30">{{this.description}}</textarea>
+        </span><br><br>
+        <span>
+            <label for="frmImportance">Wichtigkeit</label>
+            <form id="frmImportance">
+                <input type="radio" name="importance" id="inpImportance1" value="1" checked>1
+                <input type="radio" name="importance" id="inpImportance2" value="2">2
+                <input type="radio" name="importance" id="inpImportance3" value="3">3
+                <input type="radio" name="importance" id="inpImportance4" value="4">4
+                <input type="radio" name="importance" id="inpImportance5" value="5">5
+            </form>
+        </span><br>
+        <span>
+            <label for="inpFinishDate">Erledigt bis</label>
+            <input type="date" id="inpFinishDate" value="{{this.finishDate}}">
+        </span><br><br>
         <button id="btnSaveNote">Speichern</button>
         <button id="btnCancelNote">Abbrechen</button>
     </form>

@@ -26,31 +26,26 @@ class Controller {
     init(){
         this.addEventHandlerForIndexPage();
         window.addEventListener("hashchange", this.renderCurrentLocation.bind(this));
-        this.moveToPage(LocationEnum.HOME());
+        this.redirectToPage(LocationEnum.HOME(), null);
     }
 
-    moveToPage(strLocationEnum){
+    redirectToPage(strLocationEnum, params){
         history.pushState(null, strLocationEnum, strLocationEnum);
-        this.renderCurrentLocation();
+        this.renderCurrentLocation(params);
     }
 
-    renderCurrentLocation(){
+    renderCurrentLocation(params){
         let currentLocationHash = location.hash || "#home";
         // remove event handler of previous page.
 
         switch(currentLocationHash){
             case LocationEnum.HOME():
-                console.log("Controller.renderCurrentLocation() executed.");
-                console.log("Location hash: " +currentLocationHash);
                 this.renderListNotesView();
                 break;
             case LocationEnum.EDIT_NOTE():
-                console.log("Controller.renderCurrentLocation() executed.");
-                console.log("Location hash: " +currentLocationHash);
-                this.renderEditNoteView();
+                this.renderEditNoteView(params);
                 break;
             default:
-                console.log("Controller.renderCurrentLocation() executed.");
                 console.log("Aktuelle location: '" +currentLocationHash +"' ist unbekannt.");
                 break;
         }
@@ -64,11 +59,11 @@ class Controller {
         this.addEventHandlerForListNotesView();
     }
 
-    renderEditNoteView(){
+    renderEditNoteView(params){
         //Todo: remove handlers from the precious view automatically.
         this.removeEventHandlerForListNotesView();
 
-        this.editNoteView.renderUI();
+        this.editNoteView.renderUI(params);
         this.addEventHandlerForEditNotesView();
     }
 
@@ -87,21 +82,18 @@ class Controller {
 
 
     onBtnCreateNewNote_Click(){
-        console.log("Controller.onBtnCreateNewNote_Click() executed.");
         history.pushState(null, 'edit note', LocationEnum.EDIT_NOTE());
         this.renderCurrentLocation();
     }
 
     onDrpSelectStyle_Change(){
         console.log("Controller.onDrpSelectStyle_Click() executed.");
-        console.log(this.view.elm.drpSelectStyle.value);
+        console.log(this.indexPage.drpSelectStyle.value);
     }
 
 
     // Event handler for list notes view.
     //-------------------------------------------------------------------------
-
-    // Todo: add hb template fileds.
 
     addEventHandlerForListNotesView(){
         this.listNotesView.btnSortByFinishDate.onclick = this.onBtnSortByFinishDate_Click.bind(this);
@@ -135,9 +127,27 @@ class Controller {
     }
 
     onMainBubbleEvents(event){
-        console.log("Controller.onMainBubbleEvents() executed.");
-        console.log(event);
+        if(event.target.dataset.finishNoteId){
+            this.onMainBubbleEvents_finishNoteId(event);
+        }
+        else if (event.target.dataset.editNoteId){
+            this.onMainBubbleEvents_editNoteId(event);
+        }
     }
+
+    onMainBubbleEvents_finishNoteId(event){
+        this.model.setNotesStateFinished(event.target.dataset.finishNoteId,
+            event.target.checked);
+    }
+
+    onMainBubbleEvents_editNoteId(event){
+        let note = this.model.getNoteById(event.target.dataset.editNoteId);
+        if(!this.model.isNote(note)){
+            throw "Die zu editierende Notiz konnte nicht geladen werden.";
+        }
+        this.redirectToPage(LocationEnum.EDIT_NOTE(), note);
+    }
+
 
 
     // Event handler for edit note view.
@@ -154,42 +164,18 @@ class Controller {
     }
 
     onBtnSaveNote_Click(){
-        console.log("Controller.onBtnSaveNote_Click() executed.");
         this.model.saveNote(this.editNoteView.getNote());
-        this.moveToPage(LocationEnum.HOME());
+        this.redirectToPage(LocationEnum.HOME());
     }
 
     onBtnCancelNote_Click(){
-        console.log("Controller.onBtnCancelNote_Click() executed.");
-        this.moveToPage(LocationEnum.HOME());
+        this.redirectToPage(LocationEnum.HOME());
     }
 
-
-    addNote(note){
-        console.log("Controller.addNote() executed. ", note);
-        // Validate
-        // Check if note already exists.
-
-        // Save note.
-        this.model.saveNote(note);
-        window.location.replace("index.html");
-        this.renderUI();
-    }
-
-    renderUI(){
-        let elmMain = document.getElementById("main");
-        let notesListTemplate = document.getElementById("notes-list-template").innerHTML;
-        let fnNotesListTemplateScript = Handlebars.compile(notesListTemplate);
-        document.getElementById("main").innerHTML = fnNotesListTemplateScript({notes: this.model.notes});
-
-        //document.getElementById("notes").innerHTML = notes.length == 0 ? "Keine Notizen vorhanden." : notes.join("</br>"); //temporary solution.
-    }
-
-    getNotesCount() {
-        return this.model.getNotesCount();
-    }
 }
 
+// Main entry point for the application.
+//-------------------------------------------------------------------------
 
 window.onload = function() {
     console.log("window.onload started.");

@@ -59,26 +59,29 @@ export class EditNoteView {
         this.fnEditNoteTemplateScript = Handlebars.compile(editNoteTemplate);
     }
 
-    renderUI(){
-        document.querySelector("main").innerHTML = this.fnEditNoteTemplateScript();
+    renderUI(params){
+        if(params){
+            document.querySelector("main").innerHTML = this.fnEditNoteTemplateScript(params);
+        }
+        else {
+            document.querySelector("main").innerHTML = this.fnEditNoteTemplateScript(new Note());
+        }
         this.setAttributes();
     }
 
     setAttributes(){
+        this.id = document.getElementById("inpId");
         this.inpTitle = document.getElementById("inpTitle");
         this.txaDescription = document.getElementById("txaDescription");
         this.frmImportance = document.getElementById("frmImportance");
         this.inpFinishDate = document.getElementById("inpFinishDate");
         this.btnSaveNote = document.getElementById("btnSaveNote");
         this.btnCancelNote = document.getElementById("btnCancelNote");
-
-        // default values
-        this.inpFinishDate.value = new Date().toISOString().substr(0, 10);
     }
-
 
     getNote(){
         let note = new Note();
+        note.id = document.getElementById("inpId").value;
         note.title = document.getElementById("inpTitle").value;
         note.description = document.getElementById("txaDescription").value;
         note.importance = document.querySelector('input[name=importance][checked]').value;

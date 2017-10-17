@@ -16,7 +16,8 @@ import {default as Imports} from './data.js';
 export class Model {
     constructor() {
         this.storageHelper = new Imports.StorageHelper();
-        this.notes = this.storageHelper.loadDataFromStorage("notes");
+        this.storageName = "NotesStorage";
+        this.notes = this.storageHelper.loadDataFromStorage(this.storageName);
         this.currentSortOrder = SortDataEnum.BY_IMPORTANCE();
         this.filterByFinished = false;
     }
@@ -33,6 +34,10 @@ export class Model {
                 this.notes.sort((a,b) => a.finishDate - b.finishDate);
                 break;
         }
+    }
+
+    persistNotes(){
+        this.storageHelper.saveDataInStorage(this.storageName, this.notes);
     }
 
     getNotesFilteredByFinished(){
@@ -56,11 +61,16 @@ export class Model {
     }
 
     saveNote(note) {
-        if(!note instanceof Note) {
+        if(!this.isNote(note)) {
             throw "saveNote(note): Es wurde kein gültiges Notiz Objekt übergeben.";
         }
-        this.notes.push(note);
-        this.storageHelper.saveDataInStorage("notes", this.notes);
+        let existingNote = this.getNoteById(note.id);
+        if(existingNote){
+            this.notes[this.notes.indexOf(existingNote)] = note;
+        } else{
+            this.notes.push(note);
+        }
+        this.storageHelper.saveDataInStorage(this.storageName, this.notes);
     }
 
     getNoteById(id){
@@ -90,5 +100,29 @@ export class Model {
     }
     getNotesCount() {
         return this.notes.length;
+    }
+
+    setNotesStateFinished(strNoteId, boolFinished){
+        strNoteId = String(strNoteId);
+        boolFinished = Boolean(boolFinished);
+
+        let note = this.getNoteById(strNoteId);
+        if(note){
+            note.finishDate = new Date().toISOString().substr(0, 10);
+            note.finished = boolFinished;
+            this.persistNotes();
+        } else{
+            throw "Das Notiz Objekt '" +strNoteId +"' konnte nicht gefunden werden.";
+        }
+    }
+
+    isNote(note){
+        if(!note){
+            return false;
+        }
+        if(!(note instanceof Object)){
+            return false;
+        }
+        return true;
     }
 }

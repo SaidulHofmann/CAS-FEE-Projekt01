@@ -17,10 +17,10 @@ class StorageHelper {
         try {
             this.validateStorrageName(strStorageName);
 
-            if (localStorage.getItem("strStorageName")) {
-                return JSON.parse(localStorage.getItem("strStorageName"));
+            if (localStorage.getItem(strStorageName)) {
+                return JSON.parse(localStorage.getItem(strStorageName));
             } else {
-                localStorage.setItem("strStorageName", JSON.stringify([]));
+                localStorage.setItem(strStorageName, JSON.stringify([]));
                 return [];
             }
         }
@@ -38,7 +38,7 @@ class StorageHelper {
         try {
             this.validateStorrageName(strStorageName);
             this.validateStorage(storage);
-            localStorage.setItem("strStorageName", JSON.stringify(storage));
+            localStorage.setItem(strStorageName, JSON.stringify(storage));
         }
         catch (error){
             console.log(error.message);
