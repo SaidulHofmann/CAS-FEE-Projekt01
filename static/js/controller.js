@@ -26,10 +26,10 @@ class Controller {
     init(){
         this.addEventHandlerForIndexPage();
         window.addEventListener("hashchange", this.renderCurrentLocation.bind(this));
-        this.redirectToPage(LocationEnum.HOME(), null);
+        this.showPartialView(LocationEnum.HOME(), null);
     }
 
-    redirectToPage(strLocationEnum, params){
+    showPartialView(strLocationEnum, params){
         history.pushState(null, strLocationEnum, strLocationEnum);
         this.renderCurrentLocation(params);
     }
@@ -52,7 +52,7 @@ class Controller {
     }
 
     renderListNotesView(){
-        //Todo: remove handlers from the precious view automatically.
+        //Todo: remove handlers from the precious view in a separate method.
         this.removeEventHandlerForEditNotesView();
 
         this.listNotesView.renderUI(this.model.notes);
@@ -60,7 +60,7 @@ class Controller {
     }
 
     renderEditNoteView(params){
-        //Todo: remove handlers from the precious view automatically.
+        //Todo: remove handlers from the precious view in a separate method.
         this.removeEventHandlerForListNotesView();
 
         this.editNoteView.renderUI(params);
@@ -92,7 +92,7 @@ class Controller {
     }
 
 
-    // Event handler for list notes view.
+    // Event handler for the list notes view.
     //-------------------------------------------------------------------------
 
     addEventHandlerForListNotesView(){
@@ -145,7 +145,7 @@ class Controller {
         if(!this.model.isNote(note)){
             throw "Die zu editierende Notiz konnte nicht geladen werden.";
         }
-        this.redirectToPage(LocationEnum.EDIT_NOTE(), note);
+        this.showPartialView(LocationEnum.EDIT_NOTE(), note);
     }
 
 
@@ -165,11 +165,11 @@ class Controller {
 
     onBtnSaveNote_Click(){
         this.model.saveNote(this.editNoteView.getNote());
-        this.redirectToPage(LocationEnum.HOME());
+        this.showPartialView(LocationEnum.HOME());
     }
 
     onBtnCancelNote_Click(){
-        this.redirectToPage(LocationEnum.HOME());
+        this.showPartialView(LocationEnum.HOME());
     }
 
 }

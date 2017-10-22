@@ -84,7 +84,7 @@ export class EditNoteView {
         note.id = document.getElementById("inpId").value;
         note.title = document.getElementById("inpTitle").value;
         note.description = document.getElementById("txaDescription").value;
-        note.importance = document.querySelector('input[name=importance][checked]').value;
+        note.importance = document.querySelector('input[name="importance"]:checked').value;
         note.finishDate = document.getElementById("inpFinishDate").value;
         return note;
     }

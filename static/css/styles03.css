@@ -1,0 +1,166 @@
+body {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 5em 5em 7em auto 2em;
+    grid-template-areas: "header" "nav" "aside" "main" "footer";
+}
+
+@media screen and (min-width: 45em) {
+    body {
+        grid-template-columns: 1fr 4fr 1fr;
+        grid-template-rows: 5em auto 2em;
+        grid-template-areas: "header header header" "nav main aside" "nav main aside" "nav main aside" "footer footer footer";
+    }
+}
+
+body {
+    margin: 0 auto;
+    width: 90%;
+    min-width: 300px;
+    justify-content: center;
+}
+
+header, nav, main, aside, footer {
+    border: 1px solid #2C3E50;
+    border-radius: 0.2em;
+}
+
+header, footer {
+    background: darkblue;
+    text-align: center;
+    font-size: 1.5em;
+    color: white;
+}
+
+header {
+    grid-area: header;
+}
+
+nav {
+    grid-area: nav;
+    padding: 0.5em;
+    background-color: lightsteelblue;
+}
+
+nav > * {
+    margin: 0.5em;
+}
+
+main {
+    grid-area: main;
+    font-size: 1em;
+    padding: 1em;
+    background-color: aliceblue;
+    text-align: left;
+}
+
+#sortAndFilterButtons > button {
+    margin: 0.5em;
+}
+
+main textarea {
+    width: 95%;
+    min-width: 50px;
+}
+
+aside {
+    grid-area: aside;
+}
+
+aside > * {
+    margin: 1em;
+}
+
+footer {
+    grid-area: footer;
+}
+
+/*-----------------------------------------------------------------------------
+List notes form (id="list-notes-template")
+-----------------------------------------------------------------------------*/
+
+.note-list-item {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 4em 6em;
+    grid-template-areas:
+            "listFinishDate listTitle listTitle listImportance"
+            "listFinished listDescription listDescription listBtnEdit";
+}
+
+.listFinishDate {
+    grid-area: listFinishDate;
+}
+.listTitle {
+    grid-area: listTitle;
+}
+.listImportance {
+    grid-area: listImportance;
+    padding: 0 0.5em;
+}
+
+.listFinished {
+    grid-area: listFinished;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+.listDescription {
+    grid-area: listDescription;
+}
+.listBtnEdit {
+    grid-area: listBtnEdit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/*-----------------------------------------------------------------------------
+Edit note form (id="edit-note-template")
+-----------------------------------------------------------------------------*/
+
+#note-edit-item {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 3em 10em 3em 3em 3em;
+    grid-template-areas:
+            "lblInpTitle inpTitle inpTitle"
+            "lblTxaDescription txaDescription txaDescription"
+            "lblFrmImportance frmImportance frmImportance"
+            "lblInpFinishDate inpFinishDate ."
+            ". btnSaveNote btnCancelNote";
+}
+
+.lblInpTitle {
+    grid-area: lblInpTitle;
+}
+.inpTitle {
+    grid-area: inpTitle;
+}
+.lblTxaDescription {
+    grid-area: lblTxaDescription;
+}
+.txaDescription {
+    grid-area: txaDescription;
+}
+.lblFrmImportance {
+    grid-area: lblFrmImportance;
+    margin-top: 0.5em;
+}
+.frmImportance {
+    grid-area: frmImportance;
+    margin-top: 0.5em;
+}
+.lblInpFinishDate {
+    grid-area: lblInpFinishDate;
+}
+.inpFinishDate {
+    grid-area: inpFinishDate;
+}
+.btnSaveNote {
+    grid-area: btnSaveNote;
+}
+.btnCancelNote {
+    grid-area: btnCancelNote;
+}

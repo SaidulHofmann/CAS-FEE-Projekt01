@@ -3,15 +3,13 @@
 <head>
     <meta charset="utf-8">
     <title>CAS FEE Projekt 01</title>
-    <link rel="stylesheet" href="css/styles01.css">
+    <link rel="stylesheet" href="css/styles03.css">
 </head>
 
 <body>
 
-<header class="header">
-    <div class="header-item header-title">
-        <p>Notizen Verwaltung - CAS Projekt 01</p>
-    </div>
+<header>
+    <p>Notizen Verwaltung - CAS Projekt 01</p>
 </header>
 
 <nav>
@@ -24,11 +22,17 @@
     </select>
 </nav>
 
-<main>
+<aside>
+    <p>Erstellen Sie eine neue Notiz mit dem Button "Neue Notiz erstellen."</p>
+    <p>Ändern Sie eine angezeigte Notiz mit dem Button "Ändern".</p>
+</aside>
 
+<main>
+    Main Content
 </main>
 
-<footer class="footer">Footer</footer>
+<footer>&copy; 2017 Saidul Hofmann</footer>
+
 
 <script src="js/jquery-3.2.1.js"></script>
 <script src="js/handlebars-v4.0.10.js"></script>
@@ -46,51 +50,76 @@
     </div><br>
 
     {{#each notes}}
-    <div>
-        <span id="list-finishDate">Erledigt bis: {{this.finishDate}}</span>
-        <span id="list-title">Titel: {{this.title}}</span>
-        <span id="list-importance">Wichtigkeit: {{this.importance}}</span>
-        <br>
-        <span id="list-ckbFinishNote">
-            <input type="checkbox" data-finish-note-id="{{this.id}}" {{#if this.finished }} checked{{/if}}>Erledigt
-        </span>
-        <span><textarea rows="4" cols="50">{{this.description}}</textarea></span>
-        <span id="list-btnEditNote"><button type="button" data-edit-note-id="{{this.id}}">Ändern</button></span>
-        <br>
-        <br>
+    <hr>
+    <div class="note-list-item">
+        <div class="listFinishDate">
+            <span>Erledigt bis:</span>
+            <p>{{this.finishDate}}</p>
+        </div>
+        <div class="listTitle">
+            <span>Titel:</span>
+            <p>{{this.title}}</p>
+        </div>
+        <div class="listImportance">
+            <span>Wichtigkeit:</span>
+            <p>{{this.importance}}</p>
+        </div>
+        <div class="listFinished">
+            <span>
+                <input type="checkbox" data-finish-note-id="{{this.id}}" {{#if this.finished }} checked{{/if}}/>Erledigt
+            </span>
+        </div>
+        <textarea class="listDescription">{{this.description}}</textarea>
+        <div class="listBtnEdit">
+            <button type="button" data-edit-note-id="{{this.id}}">Ändern</button>
+        </div>
     </div>
     {{/each}}
 </script>
 
 <script id="edit-note-template" type="text/x-handlebars-template">
-    <form id="frmEditNote">
-        <span>
+    <div id="note-edit-item">
+        <div class="lblInpId">
             <label for="inpId" hidden>Id</label>
-            <input type="text" id="inpId" value="{{this.id}}" hidden><br><br>
+        </div>
+        <div class="inpId">
+            <input type="text" id="inpId" value="{{this.id}}" hidden/>
+        </div>
+        <div class="lblInpTitle">
             <label for="inpTitle">Titel</label>
-            <input type="text" id="inpTitle" value="{{this.title}}"><br><br>
-        </span><br>
-        <span>
+        </div>
+        <div class="inpTitle">
+            <input type="text" id="inpTitle" value="{{this.title}}"/>
+        </div>
+        <div class="lblTxaDescription">
             <label for="txaDescription">Beschreibung</label>
-            <textarea id="txaDescription" rows="5" cols="30">{{this.description}}</textarea>
-        </span><br><br>
-        <span>
+        </div>
+        <textarea class="txaDescription" id="txaDescription">{{this.description}}</textarea>
+        <div class="lblFrmImportance">
             <label for="frmImportance">Wichtigkeit</label>
+        </div>
+        <div class="frmImportance">
             <form id="frmImportance">
-                <input type="radio" name="importance" id="inpImportance1" value="1" checked>1
-                <input type="radio" name="importance" id="inpImportance2" value="2">2
-                <input type="radio" name="importance" id="inpImportance3" value="3">3
-                <input type="radio" name="importance" id="inpImportance4" value="4">4
-                <input type="radio" name="importance" id="inpImportance5" value="5">5
+                <input type="radio" name="importance" id="inpImportance1" value="1" checked/>1
+                <input type="radio" name="importance" id="inpImportance2" value="2"/>2
+                <input type="radio" name="importance" id="inpImportance3" value="3"/>3
+                <input type="radio" name="importance" id="inpImportance4" value="4"/>4
+                <input type="radio" name="importance" id="inpImportance5" value="5"/>5
             </form>
-        </span><br>
-        <span>
+        </div>
+        <div class="lblInpFinishDate">
             <label for="inpFinishDate">Erledigt bis</label>
-            <input type="date" id="inpFinishDate" value="{{this.finishDate}}">
-        </span><br><br>
-        <button id="btnSaveNote">Speichern</button>
-        <button id="btnCancelNote">Abbrechen</button>
-    </form>
+        </div>
+        <div class="inpFinishDate">
+            <input type="date" id="inpFinishDate" value="{{this.finishDate}}"/>
+        </div>
+        <div class="btnSaveNote">
+            <button id="btnSaveNote">Speichern</button>
+        </div>
+        <div class="btnCancelNote">
+            <button id="btnCancelNote">Abbrechen</button>
+        </div>
+    </div>
 </script>
 
 </body>
