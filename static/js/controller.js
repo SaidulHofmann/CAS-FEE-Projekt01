@@ -5,7 +5,7 @@ Content: Controller functionality for the notes application.
 Created on: 12.10.2017
 Author: Saidul Hofmann
 */
-import { LocationEnum } from './core-types.js';
+import { LocationEnum, SortDataEnum } from './core-types.js';
 import { Model } from "./model.js";
 import { IndexPage, ListNotesView, EditNoteView } from "./view.js";
 
@@ -55,7 +55,7 @@ class Controller {
         //Todo: remove handlers from the precious view in a separate method.
         this.removeEventHandlerForEditNotesView();
 
-        this.listNotesView.renderUI(this.model.notes);
+        this.listNotesView.renderUI(this.model.getNotesView());
         this.addEventHandlerForListNotesView();
     }
 
@@ -112,18 +112,22 @@ class Controller {
     }
 
     onBtnSortByFinishDate_Click(){
-        console.log("Controller.onBtnSortByFinishDate_Click() executed.");
+        this.model.toggletSortOrderBy(SortDataEnum.BY_FINISH_DATE());
+        this.showPartialView(LocationEnum.HOME());
     }
     onBtnSortByCreateDate_Click(){
-        console.log("Controller.onBtnSortByCreateDate_Click() executed.");
+        this.model.toggletSortOrderBy(SortDataEnum.BY_CREATE_DATE());
+        this.showPartialView(LocationEnum.HOME());
     }
 
     onBtnSortByImportance_Click(){
-        console.log("Controller.onBtnSortByImportance_Click() executed.");
+        this.model.toggletSortOrderBy(SortDataEnum.BY_IMPORTANCE());
+        this.showPartialView(LocationEnum.HOME());
     }
 
     onBtnFilterByFinished_Click(){
-        console.log("Controller.onBtnFilterByFinished_Click() executed.");
+        this.model.toggleFilterByFinished();
+        this.showPartialView(LocationEnum.HOME());
     }
 
     onMainBubbleEvents(event){
@@ -178,6 +182,7 @@ class Controller {
 //-------------------------------------------------------------------------
 
 window.onload = function() {
+
     console.log("window.onload started.");
 
     const model = new Model();

@@ -18,35 +18,65 @@ export class Model {
         this.storageHelper = new Imports.StorageHelper();
         this.storageName = "NotesStorage";
         this.notes = this.storageHelper.loadDataFromStorage(this.storageName);
+        this.notesView = this.notes;
         this.currentSortOrder = SortDataEnum.BY_IMPORTANCE();
+        this.currentSortDirectionAsc = true;
         this.filterByFinished = false;
+        this.init();
     }
 
-    sortNotes(){
+    init(){
+        this.sortNotesView();
+    }
+
+    getNotesView(){
+        return this.notesView;
+    }
+
+    updateNotesView(){
+        this.filterNotesView();
+        this.sortNotesView();
+    }
+
+    filterNotesView(){
+        if(this.filterByFinished){
+            this.notesView = this.notes.filter(note => note.finished);
+        } else{
+            this.notesView = this.notes;
+        }
+    }
+
+    sortNotesView(){
         switch(this.currentSortOrder){
             case SortDataEnum.BY_IMPORTANCE():
-                this.notes.sort((a,b) => a.importance - b.importance);
-                break;
-            case SortDataEnum.BY_CREATE_DATE():
-                this.notes.sort((a,b) => a.createDate - b.createDate);
+                if(this.currentSortDirectionAsc){
+                    this.notesView.sort((a,b) => a.importance - b.importance);
+                } else {
+                    this.notesView.sort((a,b) => b.importance - a.importance);
+                }
                 break;
             case SortDataEnum.BY_FINISH_DATE():
-                this.notes.sort((a,b) => a.finishDate - b.finishDate);
+                if(this.currentSortDirectionAsc){
+                    this.notesView.sort((a,b) => new Date(a.finishDate) - new Date(b.finishDate));
+                } else {
+                    this.notesView.sort((a,b) => new Date(b.finishDate) - new Date(a.finishDate));
+                }
                 break;
+            case SortDataEnum.BY_CREATE_DATE():
+                if(this.currentSortDirectionAsc){
+                    this.notesView.sort((a,b) => new Date(a.createDate) - new Date(b.createDate));
+                } else {
+                    this.notesView.sort((a,b) => new Date(b.createDate) - new Date(a.createDate));
+                }
+                break;
+            default:
+                throw "Die Sortierung '" +this.currentSortOrder +"' ist unbekannt.";
         }
     }
 
     persistNotes(){
         this.storageHelper.saveDataInStorage(this.storageName, this.notes);
-    }
-
-    getNotesFilteredByFinished(){
-        return this.notes.filter(item => item.finished);
-    }
-
-    getNotesFilteredAndSorted(){
-        this.sortNotes();
-        return this.getNotesFilteredByFinished();
+        this.updateNotesView();
     }
 
     createNote() {
@@ -70,7 +100,7 @@ export class Model {
         } else{
             this.notes.push(note);
         }
-        this.storageHelper.saveDataInStorage(this.storageName, this.notes);
+        this.persistNotes();
     }
 
     getNoteById(id){
@@ -80,24 +110,25 @@ export class Model {
         return this.notes.find(item => item.id === id);
     }
 
-    setSortOrderByImportance() {
-        return getAllNotes()
-        this.currentSortOrder = SortDataEnum.BY_IMPORTANCE();
+    toggletSortOrderBy(strSortDataEnum) {
+        if(this.currentSortOrder === strSortDataEnum){
+            this.currentSortDirectionAsc = !this.currentSortDirectionAsc;
+        } else{
+            this.currentSortOrder = strSortDataEnum;
+            this.currentSortDirectionAsc = true;
+        }
+        this.sortNotesView();
     }
-    setSortOrderByCreateDate() {
-        return getAllNotes()
-        this.currentSortOrder = SortDataEnum.BY_CREATE_DATE();
-    }
-    setSortOrderByFinishDate() {
-        this.currentSortOrder = SortDataEnum.BY_FINISH_DATE();
-    }
+
     toggleFilterByFinished() {
         if(this.filterByFinished){
             this.filterByFinished = false;
         } else {
             this.filterByFinished = true;
         }
+        this.updateNotesView();
     }
+
     getNotesCount() {
         return this.notes.length;
     }
