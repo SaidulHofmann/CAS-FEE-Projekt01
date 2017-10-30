@@ -1,10 +1,11 @@
+/* CSS Style Sheet 02 für CAS-FEE Projekt 01. */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
+.body {
     margin: 0 auto;
     width: 90%;
     max-width: 1280px;
@@ -15,24 +16,24 @@ body {
     justify-content: center;
 }
 
-header, nav, main, aside, footer {
+.header, .nav, .main, .aside, .footer {
     border: 1px solid #2C3E50;
     border-radius: 0.2em;
 }
 
-header, footer {
+.header, .footer {
     background: darkblue;
     text-align: center;
     font-size: 1.5em;
     color: white;
 }
 
-header {
+.header {
     grid-column: 1 / 4;
     grid-row: 1;
 }
 
-nav {
+.nav {
     grid-column: 1 / 4;
     grid-row: 2;
     padding: 0.5em;
@@ -41,7 +42,7 @@ nav {
     justify-content: space-between;
 }
 
-main {
+.main {
     grid-column: 1 / 4;
     grid-row: 3;
     font-size: 1em;
@@ -50,10 +51,10 @@ main {
     text-align: left;
 }
 
-aside {
+.aside {
 }
 
-footer {
+.footer {
     grid-column: 1 / 4;
     grid-row: 4;
 }

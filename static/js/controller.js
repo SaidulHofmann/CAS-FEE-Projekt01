@@ -15,18 +15,50 @@ import { IndexPage, ListNotesView, EditNoteView } from "./view.js";
  */
 class Controller {
     constructor(objModel, objView) {
+        // Views
         this.model = objModel;
-        this.indexPage = objView;
+        this.mainPage = objView;
         this.listNotesView = new ListNotesView();
         this.editNoteView = new EditNoteView();
+        // State
+        this.styleSheetStorageName = "StyleSheetStorage";
+        this.currentStyleSheet = this.getLastSelectedStylesheet();
+        this.currentSortOrder = SortDataEnum.BY_IMPORTANCE();
+        this.currentSortDirectionAsc = true;
+        this.filterByFinished = false;
 
         this.init();
     }
 
     init(){
-        this.addEventHandlerForIndexPage();
+        this.addEventHandlerForMainPage();
+        this.mainPage.setStyleSheet(this.getLastSelectedStylesheet());
         window.addEventListener("hashchange", this.renderCurrentLocation.bind(this));
+        this.model.sortNotesView(this.currentSortOrder, this.currentSortDirectionAsc);
         this.showPartialView(LocationEnum.HOME(), null);
+    }
+
+    getLastSelectedStylesheet(){
+        if(this.currentStyleSheet){
+            return this.currentStyleSheet;
+        } else{
+            return this.model.loadStylesheet(this.styleSheetStorageName);
+        }
+    }
+
+    toggletSortOrderBy(strSortDataEnum) {
+        if(this.currentSortOrder === strSortDataEnum){
+            this.currentSortDirectionAsc = !this.currentSortDirectionAsc;
+        } else{
+            this.currentSortOrder = strSortDataEnum;
+            this.currentSortDirectionAsc = true;
+        }
+        this.model.sortNotesView(this.currentSortOrder, this.currentSortDirectionAsc);
+    }
+
+    toggleFilterByFinished() {
+        this.filterByFinished = !this.filterByFinished;
+        this.model.updateNotesView(this.filterByFinished, this.currentSortOrder, this.currentSortDirectionAsc);
     }
 
     showPartialView(strLocationEnum, params){
@@ -67,17 +99,17 @@ class Controller {
         this.addEventHandlerForEditNotesView();
     }
 
-    // Event handler for the index page.
+    // Event handler for the main page.
     //-------------------------------------------------------------------------
 
-    addEventHandlerForIndexPage() {
-        this.indexPage.btnCreateNewNote.onclick = this.onBtnCreateNewNote_Click.bind(this);
-        this.indexPage.drpSelectStyle.onchange = this.onDrpSelectStyle_Change.bind(this);
+    addEventHandlerForMainPage() {
+        this.mainPage.btnCreateNewNote.onclick = this.onBtnCreateNewNote_Click.bind(this);
+        this.mainPage.drpSelectStyle.onchange = this.onDrpSelectStyle_Change.bind(this);
     }
 
     removeEventHandlerForIndexPage() {
-        this.indexPage.btnCreateNewNote.onclick = null;
-        this.indexPage.drpSelectStyle.onchange = null;
+        this.mainPage.btnCreateNewNote.onclick = null;
+        this.mainPage.drpSelectStyle.onchange = null;
     }
 
 
@@ -87,8 +119,9 @@ class Controller {
     }
 
     onDrpSelectStyle_Change(){
-        console.log("Controller.onDrpSelectStyle_Click() executed.");
-        console.log(this.indexPage.drpSelectStyle.value);
+        let selectedStyleSheet = this.mainPage.setSelectedStyleSheet();
+        this.model.persistStyleSheet(this.styleSheetStorageName, selectedStyleSheet);
+        this.currentStyleSheet = selectedStyleSheet;
     }
 
 
@@ -112,21 +145,21 @@ class Controller {
     }
 
     onBtnSortByFinishDate_Click(){
-        this.model.toggletSortOrderBy(SortDataEnum.BY_FINISH_DATE());
+        this.toggletSortOrderBy(SortDataEnum.BY_FINISH_DATE());
         this.showPartialView(LocationEnum.HOME());
     }
     onBtnSortByCreateDate_Click(){
-        this.model.toggletSortOrderBy(SortDataEnum.BY_CREATE_DATE());
+        this.toggletSortOrderBy(SortDataEnum.BY_CREATE_DATE());
         this.showPartialView(LocationEnum.HOME());
     }
 
     onBtnSortByImportance_Click(){
-        this.model.toggletSortOrderBy(SortDataEnum.BY_IMPORTANCE());
+        this.toggletSortOrderBy(SortDataEnum.BY_IMPORTANCE());
         this.showPartialView(LocationEnum.HOME());
     }
 
     onBtnFilterByFinished_Click(){
-        this.model.toggleFilterByFinished();
+        this.toggleFilterByFinished();
         this.showPartialView(LocationEnum.HOME());
     }
 
@@ -146,7 +179,7 @@ class Controller {
 
     onMainBubbleEvents_editNoteId(event){
         let note = this.model.getNoteById(event.target.dataset.editNoteId);
-        if(!this.model.isNote(note)){
+        if(!Model.isNote(note)){
             throw "Die zu editierende Notiz konnte nicht geladen werden.";
         }
         this.showPartialView(LocationEnum.EDIT_NOTE(), note);
@@ -164,7 +197,7 @@ class Controller {
 
     removeEventHandlerForEditNotesView(){
         if(this.editNoteView.btnSaveNote) { this.editNoteView.btnSaveNote.onclick = null; }
-        if(this.editNoteView.btnCancelNote){ this.editNoteView.btnCancelNote.onclick = null; };
+        if(this.editNoteView.btnCancelNote){ this.editNoteView.btnCancelNote.onclick = null; }
     }
 
     onBtnSaveNote_Click(){
@@ -189,4 +222,4 @@ window.onload = function() {
     const view = new IndexPage();
     const controller = new Controller(model,view);
 
-}
+};

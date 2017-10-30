@@ -13,7 +13,7 @@ class StorageHelper {
     constructor(){
     }
 
-    loadDataFromStorage(strStorageName){
+    loadNotes(strStorageName){
         try {
             this.validateStorrageName(strStorageName);
 
@@ -29,12 +29,28 @@ class StorageHelper {
         }
     }
 
+    loadStylesheet(strStorageName){
+        try {
+            this.validateStorrageName(strStorageName);
+
+            if (localStorage.getItem(strStorageName)) {
+                return JSON.parse(localStorage.getItem(strStorageName));
+            } else {
+                localStorage.setItem(strStorageName, JSON.stringify(""));
+                return "";
+            }
+        }
+        catch (error){
+            console.log(error.message);
+        }
+    }
+
     /**
      * Creates a json string of the input object.
      * @param strStorageName = name of the storage as key for identifying the storage.
      * @param storage = storage with data (object, array, values,..) to persist.
      */
-    saveDataInStorage(strStorageName, storage) {
+    saveData(strStorageName, storage) {
         try {
             this.validateStorrageName(strStorageName);
             this.validateStorage(storage);
@@ -58,8 +74,8 @@ class StorageHelper {
     validateStorage(storage){
         if(typeof storage === "function" ){
             throw `Es wurde eine Funktion als zu speicherndes Objekt übergeben '${storage.toString()}'.`;
-            return true;
         }
+        return true;
     }
 }
 
