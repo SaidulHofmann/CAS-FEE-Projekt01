@@ -20,33 +20,33 @@ body {
     justify-content: center;
 }
 
-header, nav, main, aside, footer {
+.header, .nav, .main, .aside, .footer {
     border: 1px solid #2C3E50;
     border-radius: 0.2em;
 }
 
-header, footer {
+.header, .footer {
     background: darkblue;
     text-align: center;
     font-size: 1.5em;
     color: white;
 }
 
-header {
+.header {
     grid-area: header;
 }
 
-nav {
+.nav {
     grid-area: nav;
     padding: 0.5em;
     background-color: lightsteelblue;
 }
 
-nav > * {
+.nav > * {
     margin: 0.5em;
 }
 
-main {
+.main {
     grid-area: main;
     font-size: 1em;
     padding: 1em;
@@ -58,20 +58,20 @@ main {
     margin: 0.5em;
 }
 
-main textarea {
+.main textarea {
     width: 95%;
     min-width: 50px;
 }
 
-aside {
+.aside {
     grid-area: aside;
 }
 
-aside > * {
+.aside > * {
     margin: 1em;
 }
 
-footer {
+.footer {
     grid-area: footer;
 }
 

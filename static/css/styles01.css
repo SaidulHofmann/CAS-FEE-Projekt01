@@ -6,11 +6,11 @@
     box-sizing: border-box;
 }
 
-body {
+.body {
     font-size: 1.1em;
 }
 
-header {
+.header {
     display: flex;
     flex-direction: column;
     padding: 10px;
@@ -18,7 +18,7 @@ header {
     background: lightgoldenrodyellow;
 }
 
-header p {
+.header p {
     align-self: center;
     font-size: 1em;
     font-weight: bold;
@@ -37,7 +37,7 @@ header p {
     padding: 10px;
 }
 
-nav {
+.nav {
     display: flex;
     justify-content: flex-start;
     background: lightgoldenrodyellow;
@@ -47,7 +47,7 @@ nav {
     padding: 10px;
 }
 
-main {
+.main {
     padding: 10px;
     border-style: solid;
     border-width: 0px 3px;

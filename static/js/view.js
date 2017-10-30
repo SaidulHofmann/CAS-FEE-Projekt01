@@ -15,7 +15,23 @@ export class IndexPage {
     constructor (){
         this.btnCreateNewNote = document.getElementById('btnCreateNewNote');
         this.drpSelectStyle = document.getElementById('drpSelectStyle');
+        this.styleSheet = document.getElementById("stylesheet");
     }
+
+    getSelectedStyleSheet(){
+        return this.drpSelectStyle.value;
+    }
+
+    setSelectedStyleSheet(){
+        this.styleSheet.href = this.drpSelectStyle.value;
+        return this.drpSelectStyle.value;
+    }
+
+    setStyleSheet(strStyleSheetName){
+        this.styleSheet.href = strStyleSheetName;
+        this.drpSelectStyle.value = strStyleSheetName;
+    }
+
 }
 
 /**

@@ -3,35 +3,36 @@
 <head>
     <meta charset="utf-8">
     <title>CAS FEE Projekt 01</title>
-    <link rel="stylesheet" href="css/styles03.css">
+    <link id="stylesheet" rel="stylesheet" href="css/default.css" type="text/css" title="Standard">
 </head>
 
 <body>
 
-<header>
+<header class="header">
     <p>Notizen Verwaltung - CAS Projekt 01</p>
 </header>
 
-<nav>
+<nav class="nav">
     <button type="button" id="btnCreateNewNote">Neue Notiz erstellen</button>
 
     <select id="drpSelectStyle" name="drpSelectStyle">
-        <option value="StyleSheet01">Stylesheet 01</option>
-        <option value="StyleSheet02">Stylesheet 02</option>
-        <option value="StyleSheet03">Stylesheet 03</option>
+        <option value="css/default.css">Standard</option>
+        <option value="css/styles01.css">Style 01</option>
+        <option value="css/styles02.css">Style 02</option>
+        <option value="css/styles03.css">Style 03</option>
     </select>
 </nav>
 
-<aside>
+<aside class="aside">
     <p>Erstellen Sie eine neue Notiz mit dem Button "Neue Notiz erstellen."</p>
     <p>Ändern Sie eine angezeigte Notiz mit dem Button "Ändern".</p>
 </aside>
 
-<main>
+<main class="main">
     Main Content
 </main>
 
-<footer>&copy; 2017 Saidul Hofmann</footer>
+<footer class="footer">&copy; 2017 Saidul Hofmann</footer>
 
 
 <script src="js/jquery-3.2.1.js"></script>
