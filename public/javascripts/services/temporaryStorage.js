@@ -9,8 +9,21 @@ Author: Saidul Hofmann
 /**
  * Helper class for persisting and retrieving data from local storage.
  */
-class StorageHelper {
+export class TemporaryStorage {
     constructor(){
+    }
+
+    setValue(name, value) {
+        if (value) {
+            localStorage.setItem(name, JSON.stringify(value));
+        }
+        else {
+            localStorage.removeItem(name);
+        }
+    }
+
+    getValue(name) {
+        return JSON.parse(localStorage.getItem(name) || null);
     }
 
     loadNotes(strStorageName){
@@ -79,7 +92,3 @@ class StorageHelper {
     }
 }
 
-/**
- * Exposed external interfaces.
- */
-export default { StorageHelper };

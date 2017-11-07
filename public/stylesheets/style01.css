@@ -3,15 +3,25 @@
 body {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 5em 5em 7em auto 2em;
-    grid-template-areas: "header" "nav" "aside" "main" "footer";
+    grid-template-rows: 5em 5em 5em 7em auto 2em;
+    grid-template-areas:
+            "header"
+            "menu01"
+            "menu02"
+            "sidebar"
+            "content"
+            "footer";
 }
 
 @media screen and (min-width: 45em) {
     body {
         grid-template-columns: 1fr 4fr 1fr;
-        grid-template-rows: 5em auto 2em;
-        grid-template-areas: "header header header" "nav main aside" "nav main aside" "nav main aside" "footer footer footer";
+        grid-template-rows: 5em 5em auto 2em;
+        grid-template-areas:
+                "header header header"
+                "menu02 menu02 menu02"
+                "menu01 content sidebar"
+                "footer footer footer";
     }
 }
 
@@ -22,7 +32,7 @@ body {
     justify-content: center;
 }
 
-.header, .nav, .main, .aside, .footer {
+.header, .menu01, .menu02, #content, .sidebar, .footer {
     border: 1px solid #2C3E50;
     border-radius: 0.2em;
 }
@@ -36,20 +46,27 @@ body {
 
 .header {
     grid-area: header;
+    padding-top: 0.5em;
 }
 
-.nav {
-    grid-area: nav;
+.menu02 > *, .menu01 > * {
+    margin: 0.5em;
+}
+
+.menu01 {
+    grid-area: menu01;
     padding: 0.5em;
     background-color: lightsteelblue;
 }
 
-.nav > * {
-    margin: 0.5em;
+.menu02 {
+    grid-area: menu02;
+    padding: 0.5em;
+    background-color: lightsteelblue;
 }
 
-.main {
-    grid-area: main;
+#content {
+    grid-area: content;
     font-size: 1em;
     padding: 1em;
     background-color: aliceblue;
@@ -60,17 +77,14 @@ body {
     margin: 0.5em;
 }
 
-.main textarea {
+#content textarea {
     width: 95%;
     min-width: 50px;
 }
 
-.aside {
-    grid-area: aside;
-}
-
-.aside > * {
-    margin: 1em;
+.sidebar {
+    grid-area: sidebar;
+    padding: 1em;
 }
 
 .footer {

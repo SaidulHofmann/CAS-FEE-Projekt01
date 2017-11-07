@@ -1,0 +1,182 @@
+/* CSS Style Sheet 03 für CAS-FEE Projekt 01. */
+
+body {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 5em 5em 5em 7em auto 2em;
+    grid-template-areas:
+            "header"
+            "menu01"
+            "menu02"
+            "sidebar"
+            "content"
+            "footer";
+}
+
+@media screen and (min-width: 45em) {
+    body {
+        grid-template-columns: 1fr 4fr 1fr;
+        grid-template-rows: 5em 5em auto 2em;
+        grid-template-areas:
+                "header header header"
+                "menu02 menu02 menu02"
+                "menu01 content sidebar"
+                "footer footer footer";
+    }
+}
+
+body {
+    margin: 0 auto;
+    width: 90%;
+    min-width: 300px;
+    justify-content: center;
+}
+
+.header, .menu01, .menu02, #content, .sidebar, .footer {
+    border: 1px solid #2C3E50;
+    border-radius: 0.2em;
+}
+
+.header, .footer {
+    background: teal;
+    text-align: center;
+    font-size: 1.5em;
+    color: white;
+}
+
+.header {
+    grid-area: header;
+    padding-top: 0.5em;
+}
+
+.menu02 > *, .menu01 > * {
+    margin: 0.5em;
+}
+
+.menu01 {
+    grid-area: menu01;
+    padding: 0.5em;
+    background-color: lightgrey;
+}
+
+.menu02 {
+    grid-area: menu02;
+    padding: 0.5em;
+    background-color: lightgrey;
+}
+
+#content {
+    grid-area: content;
+    font-size: 1em;
+    padding: 1em;
+    background-color: azure;
+    text-align: left;
+}
+
+#sortAndFilterButtons > button {
+    margin: 0.5em;
+}
+
+#content textarea {
+    width: 95%;
+    min-width: 50px;
+}
+
+.sidebar {
+    grid-area: sidebar;
+    padding: 1em;
+}
+
+.footer {
+    grid-area: footer;
+}
+
+/*-----------------------------------------------------------------------------
+List notes form (id="list-notes-template")
+-----------------------------------------------------------------------------*/
+
+.note-list-item {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 4em 6em;
+    grid-template-areas:
+            "listFinishDate listTitle listTitle listImportance"
+            "listFinished listDescription listDescription listBtnEdit";
+}
+
+.listFinishDate {
+    grid-area: listFinishDate;
+}
+.listTitle {
+    grid-area: listTitle;
+}
+.listImportance {
+    grid-area: listImportance;
+    padding: 0 0.5em;
+}
+
+.listFinished {
+    grid-area: listFinished;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+.listDescription {
+    grid-area: listDescription;
+}
+.listBtnEdit {
+    grid-area: listBtnEdit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/*-----------------------------------------------------------------------------
+Edit note form (id="edit-note-template")
+-----------------------------------------------------------------------------*/
+
+#note-edit-item {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 3em 10em 3em 3em 3em;
+    grid-template-areas:
+            "lblInpTitle inpTitle inpTitle"
+            "lblTxaDescription txaDescription txaDescription"
+            "lblFrmImportance frmImportance frmImportance"
+            "lblInpFinishDate inpFinishDate ."
+            ". btnSaveNote btnCancelNote";
+}
+
+.lblInpTitle {
+    grid-area: lblInpTitle;
+}
+.inpTitle {
+    grid-area: inpTitle;
+}
+.lblTxaDescription {
+    grid-area: lblTxaDescription;
+}
+.txaDescription {
+    grid-area: txaDescription;
+}
+.lblFrmImportance {
+    grid-area: lblFrmImportance;
+    margin-top: 0.5em;
+}
+.frmImportance {
+    grid-area: frmImportance;
+    margin-top: 0.5em;
+}
+.lblInpFinishDate {
+    grid-area: lblInpFinishDate;
+}
+.inpFinishDate {
+    grid-area: inpFinishDate;
+}
+.btnSaveNote {
+    grid-area: btnSaveNote;
+}
+.btnCancelNote {
+    grid-area: btnCancelNote;
+}

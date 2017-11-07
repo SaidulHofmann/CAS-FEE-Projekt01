@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>CAS FEE Projekt 01</title>
+        <link id="lnkDefaultStyleSheet" rel="stylesheet" href="../stylesheets/default.css" type="text/css" title="Standard">
+    </head>
+
+    <body>
+
+        <header class="header"></header>
+        <nav class="menu01"></nav>
+        <nav class="menu02"></nav>
+        <aside class="sidebar"></aside>
+        <main id="content" class="logged-in"></main>
+        <footer class="footer"></footer>
+
+        <!-- Handlebar Templates -->
+
+        <!-- Main menu -->
+
+        <script id="menu01-template" type="text/x-handlebars-template">
+            <button type="button" id="btnCreateNewNote">Neue Notiz erstellen</button>
+
+            <select id="drpSelectStyle" name="drpSelectStyle">
+                <option value="../stylesheets/default.css">Standard</option>
+                <option value="../stylesheets/style01.css">Style 01</option>
+                <option value="../stylesheets/style02.css">Style 02</option>
+                <option value="../stylesheets/style03.css">Style 03</option>
+            </select>
+
+            <input type="button" value="Login" id="btnLogin" class="logged-out">
+            <input type="button" value="Logout" id="btnLogout" class="logged-in">
+        </script>
+
+        <!-- Sub Menu -->
+
+        <script id="menu02-template" type="text/x-handlebars-template">
+            <div id ="sortAndFilterButtons">
+                <button id="btnSortByFinishDate" class="orderButtons" type="button">Nach Abschlussdatum</button>
+                <button id="btnSortByCreateDate" class="orderButtons" type="button">Nach Erstelldatum</button>
+                <button id="btnSortByImportance" class="orderButtons" type="button">Nach Wichtigkeit</button>
+                <button id="btnFilterByFinished" class="filterButtons" type="button">Abgeschlossene</button>
+            </div>
+        </script>
+
+        <!-- Template for listing notes. -->
+
+        <script id="list-notes-template" type="text/x-handlebars-template">
+            {{#each notes}}
+            <div class="note-list-item">
+                <div class="listFinishDate">
+                    <span>Erledigt bis:</span>
+                    <p>{{this.finishDate}}</p>
+                </div>
+                <div class="listTitle">
+                    <span>Titel:</span>
+                    <p>{{this.title}}</p>
+                </div>
+                <div class="listImportance">
+                    <span>Wichtigkeit:</span>
+                    <p>{{this.importance}}</p>
+                </div>
+                <div class="listFinished">
+                    <span>
+                        <input type="checkbox" data-finish-note-id="{{this.id}}" {{#if this.finished }} checked{{/if}}/>Erledigt
+                    </span>
+                </div>
+                <textarea class="listDescription">{{this.description}}</textarea>
+                <div class="listBtnEdit">
+                    <button type="button" data-edit-note-id="{{this.id}}">Ändern</button>
+                </div>
+            </div>
+            <hr>
+            {{/each}}
+        </script>
+
+        <!-- Template for adding and editing notes. -->
+
+        <script id="edit-note-template" type="text/x-handlebars-template">
+            <div id="note-edit-item">
+                <div class="lblInpId">
+                    <label for="inpId" hidden>Id</label>
+                </div>
+                <div class="inpId">
+                    <input type="text" id="inpId" value="{{this.id}}" hidden/>
+                </div>
+                <div class="lblInpTitle">
+                    <label for="inpTitle">Titel</label>
+                </div>
+                <div class="inpTitle">
+                    <input type="text" id="inpTitle" value="{{this.title}}"/>
+                </div>
+                <div class="lblTxaDescription">
+                    <label for="txaDescription">Beschreibung</label>
+                </div>
+                <textarea class="txaDescription" id="txaDescription">{{this.description}}</textarea>
+                <div class="lblFrmImportance">
+                    <label for="frmImportance">Wichtigkeit</label>
+                </div>
+                <div class="frmImportance">
+                    <form id="frmImportance">
+                        <input type="radio" name="importance" id="inpImportance1" value="1" {{#ifCond  this.importance '==' '1'}} checked{{/ifCond}}/>1
+                        <input type="radio" name="importance" id="inpImportance2" value="2" {{#ifCond  this.importance '==' '2'}} checked{{/ifCond}}/>2
+                        <input type="radio" name="importance" id="inpImportance3" value="3" {{#ifCond  this.importance '==' '3'}} checked{{/ifCond}}/>3
+                        <input type="radio" name="importance" id="inpImportance4" value="4" {{#ifCond  this.importance '==' '4'}} checked{{/ifCond}}/>4
+                        <input type="radio" name="importance" id="inpImportance5" value="5" {{#ifCond  this.importance '==' '5'}} checked{{/ifCond}}/>5
+                    </form>
+                </div>
+                <div class="lblInpFinishDate">
+                    <label for="inpFinishDate">Erledigt bis</label>
+                </div>
+                <div class="inpFinishDate">
+                    <input type="date" id="inpFinishDate" value="{{this.finishDate}}"/>
+                </div>
+                <div class="btnSaveNote">
+                    <button id="btnSaveNote">Speichern</button>
+                </div>
+                <div class="btnCancelNote">
+                    <button id="btnCancelNote">Abbrechen</button>
+                </div>
+            </div>
+        </script>
+
+        <!-- Scripts -->
+
+        <script src="../javascripts/libs/jquery-3.2.1.js"></script>
+        <script type="module" src="../javascripts/services/temporaryStorage.js"></script>
+        <script type="module" src="../javascripts/services/restClient.js"></script>
+        <script type="module" src="../javascripts/controller/indexController.js"></script>
+
+        <script src="../javascripts/libs/handlebars-v4.0.10.js"></script>
+        <script src="../javascripts/utils/handlebarsHelpers.js"></script>
+
+        <script type="module" src="../javascripts/model.js"></script>
+
+
+    </body>
+</html>

@@ -6,8 +6,8 @@ Created on: 12.10.2017
 Author: Saidul Hofmann
 */
 
-import { Note, SortDataEnum } from './core-types.js';
-import {default as Imports} from './data.js';
+import { Note, SortFieldEnum } from './services/coreTtypes.js';
+import {TemporaryStorage} from './services/temporaryStorage.js';
 
 
 /**
@@ -15,9 +15,9 @@ import {default as Imports} from './data.js';
  */
 export class Model {
     constructor() {
-        this.storageHelper = new Imports.StorageHelper();
+        this.tempStorage = new TemporaryStorage();
         this.storageName = "NotesStorage";
-        this.notes = this.storageHelper.loadNotes(this.storageName);
+        this.notes = this.tempStorage.loadNotes(this.storageName);
         this.notesView = this.notes;
         this.init();
     }
@@ -36,7 +36,7 @@ export class Model {
 
     filterNotesView(bolFilterByFinished){
         if(bolFilterByFinished){
-            this.notesView = this.notes.filter(note => note.finished);
+            this.notesView = this.notes.filter(note => note.isFinished);
         } else{
             this.notesView = this.notes;
         }
@@ -44,21 +44,21 @@ export class Model {
 
     sortNotesView(strSortOrder, bolSortDirectionAsc){
         switch(strSortOrder){
-            case SortDataEnum.BY_IMPORTANCE():
+            case SortFieldEnum.IMPORTANCE:
                 if(bolSortDirectionAsc){
                     this.notesView.sort((a,b) => a.importance - b.importance);
                 } else {
                     this.notesView.sort((a,b) => b.importance - a.importance);
                 }
                 break;
-            case SortDataEnum.BY_FINISH_DATE():
+            case SortFieldEnum.FINISH_DATE:
                 if(bolSortDirectionAsc){
                     this.notesView.sort((a,b) => new Date(a.finishDate) - new Date(b.finishDate));
                 } else {
                     this.notesView.sort((a,b) => new Date(b.finishDate) - new Date(a.finishDate));
                 }
                 break;
-            case SortDataEnum.BY_CREATE_DATE():
+            case SortFieldEnum.CREATE_DATE:
                 if(bolSortDirectionAsc){
                     this.notesView.sort((a,b) => new Date(a.createDate) - new Date(b.createDate));
                 } else {
@@ -71,16 +71,15 @@ export class Model {
     }
 
     persistNotes(){
-        this.storageHelper.saveData(this.storageName, this.notes);
-        this.updateNotesView();
+        this.tempStorage.saveData(this.storageName, this.notes);
     }
 
     persistStyleSheet(strStyleSheetStorageName, strStyleSheet){
-        this.storageHelper.saveData(strStyleSheetStorageName, strStyleSheet);
+        this.tempStorage.saveData(strStyleSheetStorageName, strStyleSheet);
     }
 
     loadStylesheet(strStyleSheetStorageName){
-        return this.storageHelper.loadStylesheet(strStyleSheetStorageName);
+        return this.tempStorage.loadStylesheet(strStyleSheetStorageName);
     }
 
     createNote() {
@@ -95,7 +94,7 @@ export class Model {
     }
 
     saveNote(note) {
-        if(!Model.isNote(note)) {
+        if(!this.isNote(note)) {
             throw "saveNote(note): Es wurde kein gültiges Notiz Objekt übergeben.";
         }
         let existingNote = this.getNoteById(note.id);
@@ -125,7 +124,7 @@ export class Model {
         let note = this.getNoteById(strNoteId);
         if(note){
             note.finishDate = new Date().toISOString().substr(0, 10);
-            note.finished = boolFinished;
+            note.isFinished = boolFinished;
             this.persistNotes();
         } else{
             throw "Das Notiz Objekt '" +strNoteId +"' konnte nicht gefunden werden.";
@@ -133,6 +132,8 @@ export class Model {
     }
 
     isNote(note){
-        return note instanceof Note;
+        // Todo: Note Objekt wurde mit Attributen erweitert. Temporär true zurückgeben.
+        //return note instanceof Note;
+        return true;
     }
 }
