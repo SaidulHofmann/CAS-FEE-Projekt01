@@ -63,12 +63,12 @@
                 </div>
                 <div class="listFinished">
                     <span>
-                        <input type="checkbox" data-finish-note-id="{{this.id}}" {{#if this.finished }} checked{{/if}}/>Erledigt
+                        <input type="checkbox" data-finish-note-id="{{this._id}}" {{#if this.finished }} checked{{/if}} />Erledigt
                     </span>
                 </div>
-                <textarea class="listDescription">{{this.description}}</textarea>
+                <textarea class="listDescription" readonly>{{this.description}}</textarea>
                 <div class="listBtnEdit">
-                    <button type="button" data-edit-note-id="{{this.id}}">Ändern</button>
+                    <button type="button" data-edit-note-id="{{this._id}}">Ändern</button>
                 </div>
             </div>
             <hr>
@@ -80,10 +80,22 @@
         <script id="edit-note-template" type="text/x-handlebars-template">
             <div id="note-edit-item">
                 <div class="lblInpId">
-                    <label for="inpId" hidden>Id</label>
+                    <label for="inp_id" hidden>Id</label>
                 </div>
                 <div class="inpId">
-                    <input type="text" id="inpId" value="{{this.id}}" hidden/>
+                    <input type="text" id="inp_id" value="{{this._id}}" hidden/>
+                </div>
+                <div class="lblCreatedBy">
+                    <label for="inpCreatedBy" hidden>Erstellt von</label>
+                </div>
+                <div class="inpCreatedBy">
+                    <input type="text" id="inpCreatedBy" value="{{this.createdBy}}" hidden/>
+                </div>
+                <div class="lblCreateDate">
+                    <label for="inpCreateDate" hidden>Erstellt am</label>
+                </div>
+                <div class="inpCreateDate">
+                    <input type="date" id="inpCreateDate" value="{{this.createDate}}" hidden/>
                 </div>
                 <div class="lblInpTitle">
                     <label for="inpTitle">Titel</label>

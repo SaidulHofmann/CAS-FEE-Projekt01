@@ -6,7 +6,7 @@ Created on: 12.10.2017
 Author: Saidul Hofmann
 */
 
-import { Note, SortFieldEnum } from './services/coreTtypes.js';
+import { Note, SortFieldEnum } from './services/coreTypes.js';
 import {TemporaryStorage} from './services/temporaryStorage.js';
 
 

@@ -1,41 +1,34 @@
 const jwt = require('jsonwebtoken');
 const userService = require('../services/userStore.js');
 
-function publicIsLoggedIn(req)
-{
+function publicIsLoggedIn(req) {
     return req.user != null;
 }
 
-function authenticated(req, res, next){
+function authenticated(req, res, next) {
 
-    if(publicIsLoggedIn(req))
-    {
+    if (publicIsLoggedIn(req)) {
         next();
     }
-    else
-    {
+    else {
         res.status(401).send(false);
     }
 }
 
-function currentUser(req)
-{
+function currentUser(req) {
     return req.user.name;
 }
 
 
-function createSessionToken(name, secret, options, callback)
-{
-    if(!name){
+function createSessionToken(name, secret, options, callback) {
+    if (!name) {
         return "";
     }
-    jwt.sign({ name }, secret, options, (err, token) => callback(token));
+    jwt.sign({name}, secret, options, (err, token) => callback(token));
 }
 
-function handleLogin(req,res)
-{
-    if (publicIsLoggedIn(req))
-    {
+function handleLogin(req, res) {
+    if (publicIsLoggedIn(req)) {
         res.send(true);
     }
     else {
@@ -46,11 +39,17 @@ function handleLogin(req,res)
                     req.app.get("jwt-sign"),
                     (token) => res.json(token));
             }
-            else{
+            else {
                 res.status("401").json(false);
             }
         });
     }
 }
 
-module.exports = {isLoggedIn : publicIsLoggedIn, handleAuthenticate :authenticated , current : currentUser, createToken : createSessionToken, handleLogin : handleLogin};
+module.exports = {
+    isLoggedIn: publicIsLoggedIn,
+    handleAuthenticate: authenticated,
+    current: currentUser,
+    createToken: createSessionToken,
+    handleLogin: handleLogin
+};

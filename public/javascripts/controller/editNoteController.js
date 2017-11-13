@@ -1,83 +1,128 @@
+"use strict";
 /**
- * Controller for the edit-notes partial view.
+ * Project: HSR CAS FEE 2017, Project 01 - notes application.
+ * Content: Controller for the edit-notes partial view.
+ * Created on: 12.10.2017
+ * Author: Saidul Hofmann
  */
 
-import { Note } from '../services/coreTtypes.js';
-import { LocationEnum, SortFieldEnum } from "../services/coreTtypes.js";
-import { RestClient } from "../services/restClient.js";
+import {Note} from '../services/coreTypes.js';
+import {LocationEnum, SortFieldEnum} from "../services/coreTypes.js";
+import {RestClient} from "../services/restClient.js";
 
 
 export class EditNoteController {
 
-    constructor(objIndexController){
+    constructor(objIndexController) {
         this.indexCtr = objIndexController;
         this.restClient = objIndexController.restClient;
         this.init();
     }
 
-    init(){
+    init() {
         let editNoteTemplate = document.getElementById("edit-note-template").innerHTML;
-        this.fnEditNoteTemplateScript = Handlebars.compile(editNoteTemplate);
+        this.fnEditNoteRenderer = Handlebars.compile(editNoteTemplate);
     }
 
-    renderUI(params){
-        if(params){
-            document.querySelector("main").innerHTML = this.fnEditNoteTemplateScript(params);
-        }
-        else {
-            document.querySelector("main").innerHTML = this.fnEditNoteTemplateScript(new Note());
-        }
-        this.setAttributes();
-        this.addEventHandlers();
+    //-------------------------------------------------------------------------
+    // Getters / Setters
+    //-------------------------------------------------------------------------
+
+    getIdValue() {
+        return document.getElementById("inp_id").value;
     }
 
-    RenderDefaultView() {
-        this.removeEventHandlers();
-        this.indexCtr.showPartialView(LocationEnum.HOME);
+    getCreatedByValue() {
+        return document.getElementById("inpCreatedBy").value;
     }
 
-    setAttributes(){
-        this.id = document.getElementById("inpId");
-        this.inpTitle = document.getElementById("inpTitle");
-        this.txaDescription = document.getElementById("txaDescription");
-        this.frmImportance = document.getElementById("frmImportance");
-        this.inpFinishDate = document.getElementById("inpFinishDate");
-        this.btnSaveNote = document.getElementById("btnSaveNote");
-        this.btnCancelNote = document.getElementById("btnCancelNote");
+    getInpTitleValue() {
+        return document.getElementById("inpTitle").value;
     }
 
-    getNote(){
-        let note = new Note();
-        note.id = document.getElementById("inpId").value;
-        note.title = document.getElementById("inpTitle").value;
-        note.description = document.getElementById("txaDescription").value;
-        note.importance = document.querySelector('input[name="importance"]:checked').value;
-        note.finishDate = document.getElementById("inpFinishDate").value;
-        return note;
+    getTxaDescriptionValue() {
+        return document.getElementById("txaDescription").value;
+    }
+
+    getInpImportanceSelectedValue() {
+        return document.querySelector('input[name="importance"]:checked').value;
+    }
+
+    getInpCreateDateValue() {
+        return document.getElementById("inpCreateDate").value;
+    }
+
+    getInpFinishDateValue() {
+        return document.getElementById("inpFinishDate").value;
+    }
+
+    getBtnSaveNote() {
+        return document.getElementById("btnSaveNote");
+    }
+
+    getBtnCancelNote() {
+        return document.getElementById("btnCancelNote");
     }
 
     // -------------------------------------------------------------------------
     // Event handlers
     // -------------------------------------------------------------------------
 
-    addEventHandlers(){
-        this.btnSaveNote.onclick = this.onBtnSaveNote_Click.bind(this);
-        this.btnCancelNote.onclick = this.onBtnCancelNote_Click.bind(this);
+    addEventHandlers() {
+        this.getBtnSaveNote().onclick = this.onBtnSaveNote_Click.bind(this);
+        this.getBtnCancelNote().onclick = this.onBtnCancelNote_Click.bind(this);
     }
 
-    removeEventHandlers(){
-        if(this.btnSaveNote) { this.btnSaveNote.onclick = null; }
-        if(this.btnCancelNote){ this.btnCancelNote.onclick = null; }
+    removeEventHandlers() {
+        if (this.getBtnSaveNote()) {
+            this.getBtnSaveNote().onclick = null;
+        }
+        if (this.getBtnCancelNote()) {
+            this.getBtnCancelNote().onclick = null;
+        }
     }
 
-    onBtnSaveNote_Click() {
-        //this.model.saveNote(this.getNote());
+    async onBtnSaveNote_Click() {
         event.preventDefault();
-        this.restClient.createNote(this.getNote()).done(this.RenderDefaultView.bind(this)).fail(function(msg ) { //nothing!
-            });
+        await this.restClient.saveNote(this.indexCtr.currentUser, this.getNote());
+        this.RenderDefaultView();
     }
 
-    onBtnCancelNote_Click(){
-        this.indexCtr.showPartialView(LocationEnum.HOME);
+    onBtnCancelNote_Click() {
+        this.indexCtr.renderPartialView(LocationEnum.LIST_NOTES);
     }
+
+    //-------------------------------------------------------------------------
+    // Additional Methods
+    //-------------------------------------------------------------------------
+
+    renderUI(params) {
+        if (params) {
+            document.querySelector("#content").innerHTML = this.fnEditNoteRenderer(params);
+        }
+        else {
+            let note = new Note();
+            note.createdBy = this.indexCtr.currentUser.email;
+            document.querySelector("#content").innerHTML = this.fnEditNoteRenderer(note);
+        }
+        this.addEventHandlers();
+    }
+
+    RenderDefaultView() {
+        this.removeEventHandlers();
+        this.indexCtr.renderPartialView(LocationEnum.LIST_NOTES);
+    }
+
+    getNote() {
+        let note = new Note();
+        note._id = this.getIdValue();
+        note.createdBy = this.getCreatedByValue();
+        note.title = this.getInpTitleValue();
+        note.description = this.getTxaDescriptionValue();
+        note.importance = this.getInpImportanceSelectedValue();
+        note.createDate = this.getInpCreateDateValue();
+        note.finishDate = this.getInpFinishDateValue();
+        return note;
+    }
+
 }

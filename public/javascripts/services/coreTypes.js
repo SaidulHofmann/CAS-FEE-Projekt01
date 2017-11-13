@@ -9,7 +9,7 @@
 
 export class Note {
     constructor() {
-        this.id = createGuid();
+        this._id = createGuid();
         this.createdBy = "";
         this.title = "";
         this.description = "";
@@ -20,10 +20,10 @@ export class Note {
     }
 }
 
-export class UserSettings {
-    constructor(strEmail, strPasswordHash) {
+export class User {
+    constructor(strEmail) {
         this.email = strEmail;
-        this.passwortHash = strPasswordHash;
+        this.passwortHash = "";
         this.sortField = SortFieldEnum.FINISH_DATE;
         this.isSortDirectionAsc = true;
         this.isFilteredByFinished = false;
@@ -33,19 +33,28 @@ export class UserSettings {
 
 export class SortFieldEnum {
     static get FINISH_DATE(){
-        return "FINISH_DATE";
+        return "finishDate";
     }
     static get CREATE_DATE(){
-        return "CREATE_DATE";
+        return "createDate";
     }
     static get IMPORTANCE(){
-        return "IMPORTANCE";
+        return "importance";
+    }
+}
+
+export class FilterFieldEnum {
+    static get IS_FINISHED(){
+        return "isFinished";
     }
 }
 
 export class LocationEnum {
-    static get HOME(){
-        return "#home";
+    static get LOGIN(){
+        return "#login";
+    }
+    static get LIST_NOTES(){
+        return "#listNotes";
     }
     static get EDIT_NOTE(){
         return "#editNote";
