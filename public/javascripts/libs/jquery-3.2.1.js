@@ -5885,13 +5885,13 @@ jQuery.extend( {
 					}
 
 					// Support: Chrome <=35 - 45+
-					// Assign undefined instead of using delete, see Data#remove
+					// Assign undefined instead of using deleteNote, see Data#remove
 					elem[ dataPriv.expando ] = undefined;
 				}
 				if ( elem[ dataUser.expando ] ) {
 
 					// Support: Chrome <=35 - 45+
-					// Assign undefined instead of using delete, see Data#remove
+					// Assign undefined instead of using deleteNote, see Data#remove
 					elem[ dataUser.expando ] = undefined;
 				}
 			}

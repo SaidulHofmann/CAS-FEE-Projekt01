@@ -4,7 +4,7 @@
 {"id":"41e0a306-86c4-4c78-8ccd-3de5f5054aa5","_id":"41e0a306-86c4-4c78-8ccd-3de5f5054aa5","createdBy":"","title":"Test04","description":"Test04","importance":"3","createDate":"2017-11-12","finishDate":"2017-11-07","isFinished":false}
 {"_id":"440e0c6b-fa70-4660-aff3-320d8ae34114","createdBy":"admin@admin.ch","title":"Test05","description":"Test05","importance":"5","createDate":"2017-11-12","finishDate":"2017-11-13","isFinished":true}
 {"createdBy":"","title":"Kochkurs","description":"Kochkurs 1","importance":"3","createDate":"2017-11-12","finishDate":"2017-03-17","isFinished":false,"_id":"4vLZ0wYRyXHNKOB4"}
-{"_id":"506357dc-7777-4026-9835-898a329bdf8f","createdBy":"admin@admin.ch","title":"Test12","description":"Test12","importance":"5","createDate":"2017-11-12","finishDate":"2017-11-14","isFinished":false}
+{"_id":"506357dc-7777-4026-9835-898a329bdf8f","createdBy":"admin@admin.ch","title":"Test12","description":"Test12","importance":"4","createDate":"2017-11-12","finishDate":"2017-11-14","isFinished":false}
 {"id":"7416cb40-0799-4aee-b96b-88bccd1bdb48","createdBy":"","title":"Test05","description":"Test05","importance":"1","createDate":"2017-11-07","finishDate":"2017-11-07","isFinished":false,"_id":"5Yy9CWhvFPHzKEu2"}
 {"_id":"5a1a1782-e545-4f93-b2ed-a68944a18f05","createdBy":"admin@admin.ch","title":"Test11","description":"Test11","importance":"4","createDate":"2017-11-12","finishDate":"2018-11-12","isFinished":false}
 {"id":"f2d2d8ce-1329-46ae-a9bf-d00a6cf85476","_id":"67333910-e728-4e74-91a2-c539e31a8491","createdBy":"","title":"Einkaufen","description":"Einkaufen in Migros.6","importance":"4","createDate":"2017-11-11","finishDate":"2017-11-05","isFinished":false}
@@ -29,4 +29,4 @@
 {"_id":"fcfc3b28-618e-4602-8a05-98f5ff09e3b2","createdBy":"","title":"Testnotiz 2","description":"Testnotiz 2","importance":"4","createDate":"2017-11-12","finishDate":"2018-11-12","isFinished":false}
 {"_id":"ff8a5e1d-efc2-4f6c-bddc-65b0c294eba0","createdBy":"","title":"Test03","description":"Test03","importance":"3","createDate":"2017-11-12","finishDate":"2017-11-15","isFinished":false}
 {"_id":"wv4xv9jyjgAgHkYs","createdBy":"admin@admin.ch","title":"Test06","description":"Test07","importance":"1","createDate":"2017-11-07","finishDate":"2017-11-07","isFinished":false}
-{"_id":"506357dc-7777-4026-9835-898a329bdf8f","createdBy":"admin@admin.ch","title":"Test12","description":"Test12","importance":"4","createDate":"2017-11-12","finishDate":"2017-11-14","isFinished":false}
+{"$$deleted":true,"_id":"93164a4d-4aba-498a-a417-296a5602c1df"}

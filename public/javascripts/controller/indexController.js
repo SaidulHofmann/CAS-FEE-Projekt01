@@ -6,23 +6,20 @@
  * Author: Saidul Hofmann
  */
 
-import {LocationEnum, SortFieldEnum} from "../services/coreTypes.js";
-import {Model} from "../model.js";
-import {EditNoteController} from "./editNoteController.js";
-import {ListNotesController} from "./listNotesController.js";
-import {RestClient} from "../services/restClient.js";
-import {User} from "../services/coreTypes.js";
+import { LocationEnum } from "../services/coreTypes.js";
+import { EditNoteController } from "./editNoteController.js";
+import { ListNotesController } from "./listNotesController.js";
+import { RestClient } from "../services/restClient.js";
 
 
 /**
  * Handles user inputs and routing. Mediates between view and business logic.
  */
 class IndexController {
-    constructor(objModel) {
+    constructor() {
 
         this.relativeRootPath = "../";
         this.styleSheetStorageName = "StyleSheetStorage";
-        this.model = objModel;
         this.restClient = new RestClient();
 
         // State
@@ -41,7 +38,6 @@ class IndexController {
         this.setDefaultText();
         this.setPartialRenderers();
         this.renderUI();
-        // this.renderPartialView(LocationEnum.LIST_NOTES, null);
     }
 
     // -------------------------------------------------------------------------
@@ -58,11 +54,11 @@ class IndexController {
     }
 
     setPartialRenderers() {
-        let menu01Template = document.getElementById("menu01-template").innerHTML;
-        this.menu01Renderer = Handlebars.compile(menu01Template);
+        let mainMenuTemplate = document.getElementById("mainMenu-template").innerHTML;
+        this.mainMenuRenderer = Handlebars.compile(mainMenuTemplate);
 
-        let menu02Template = document.getElementById("menu02-template").innerHTML;
-        this.menu02Renderer = Handlebars.compile(menu02Template);
+        let subMenu01Template = document.getElementById("subMenu01-template").innerHTML;
+        this.subMenu01Renderer = Handlebars.compile(subMenu01Template);
     }
 
     getStyleSheetLink() {
@@ -139,13 +135,12 @@ class IndexController {
 
     renderLoginView() {
         this.setSidebarText(this.sidebarTextLogin);
-        this.listNotesCtr.renderUI(this.currentUser);
+        this.listNotesCtr.renderUI();
     }
 
     renderListNotesView() {
-        //this.listNotesCtr.renderUI(this.model.getNotesView());
         this.setSidebarText(this.sidebarTextNotesListing);
-        this.listNotesCtr.renderUI(this.currentUser);
+        this.listNotesCtr.renderUI();
     }
 
     renderEditNoteView(params) {
@@ -174,7 +169,7 @@ class IndexController {
 
     onDrpSelectStyle_Change() {
         let selectedStyleSheet = this.setSelectedStyleSheet();
-        this.model.persistStyleSheet(this.styleSheetStorageName, selectedStyleSheet);
+        this.restClient.saveStyleSheet(this.styleSheetStorageName, selectedStyleSheet);
         this.currentStyleSheet = selectedStyleSheet;
     }
 
@@ -216,8 +211,8 @@ class IndexController {
 
     renderUI() {
         document.querySelector(".header").innerText = this.headerTextDefault;
-        document.querySelector(".menu01").innerHTML = this.menu01Renderer();
-        document.querySelector(".menu02").innerHTML = this.menu02Renderer();
+        document.querySelector(".mainMenu").innerHTML = this.mainMenuRenderer();
+        document.querySelector(".subMenu01").innerHTML = this.subMenu01Renderer();
         document.querySelector(".footer").innerText = this.footerTextDefault;
 
         this.setStyleSheet(this.getLastSelectedStylesheet());
@@ -237,9 +232,7 @@ class IndexController {
 
 window.onload = function () {
 
-    console.log("window.onload started.");
-
-    const model = new Model();
-    const controller = new IndexController(model);
+    console.log("window.onload: loading IndexController");
+    const controller = new IndexController();
 
 };

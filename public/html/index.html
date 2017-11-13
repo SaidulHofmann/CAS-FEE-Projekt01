@@ -9,8 +9,8 @@
     <body>
 
         <header class="header"></header>
-        <nav class="menu01"></nav>
-        <nav class="menu02"></nav>
+        <nav class="mainMenu"></nav>
+        <nav class="subMenu01"></nav>
         <aside class="sidebar"></aside>
         <main id="content" class="logged-in"></main>
         <footer class="footer"></footer>
@@ -19,7 +19,10 @@
 
         <!-- Main menu -->
 
-        <script id="menu01-template" type="text/x-handlebars-template">
+        <script id="mainMenu-template" type="text/x-handlebars-template">
+            <input type="button" value="Login" id="btnLogin" class="logged-out">
+            <input type="button" value="Logout" id="btnLogout" class="logged-in">
+
             <button type="button" id="btnCreateNewNote">Neue Notiz erstellen</button>
 
             <select id="drpSelectStyle" name="drpSelectStyle">
@@ -28,14 +31,11 @@
                 <option value="../stylesheets/style02.css">Style 02</option>
                 <option value="../stylesheets/style03.css">Style 03</option>
             </select>
-
-            <input type="button" value="Login" id="btnLogin" class="logged-out">
-            <input type="button" value="Logout" id="btnLogout" class="logged-in">
         </script>
 
         <!-- Sub Menu -->
 
-        <script id="menu02-template" type="text/x-handlebars-template">
+        <script id="subMenu01-template" type="text/x-handlebars-template">
             <div id ="sortAndFilterButtons">
                 <button id="btnSortByFinishDate" class="orderButtons" type="button">Nach Abschlussdatum</button>
                 <button id="btnSortByCreateDate" class="orderButtons" type="button">Nach Erstelldatum</button>
@@ -69,6 +69,9 @@
                 <textarea class="listDescription" readonly>{{this.description}}</textarea>
                 <div class="listBtnEdit">
                     <button type="button" data-edit-note-id="{{this._id}}">Ändern</button>
+                </div>
+                <div class="listBtnDelete">
+                    <button type="button" data-delete-note-id="{{this._id}}">Löschen</button>
                 </div>
             </div>
             <hr>
@@ -143,9 +146,6 @@
 
         <script src="../javascripts/libs/handlebars-v4.0.10.js"></script>
         <script src="../javascripts/utils/handlebarsHelpers.js"></script>
-
-        <script type="module" src="../javascripts/model.js"></script>
-
 
     </body>
 </html>

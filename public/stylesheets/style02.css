@@ -6,8 +6,8 @@ body {
     grid-template-rows: 5em 5em 5em 7em auto 2em;
     grid-template-areas:
             "header"
-            "menu01"
-            "menu02"
+            "mainMenu"
+            "subMenu01"
             "sidebar"
             "content"
             "footer";
@@ -19,8 +19,8 @@ body {
         grid-template-rows: 5em 5em auto 2em;
         grid-template-areas:
                 "header header header"
-                "menu02 menu02 menu02"
-                "menu01 content sidebar"
+                "subMenu01 subMenu01 subMenu01"
+                "mainMenu content sidebar"
                 "footer footer footer";
     }
 }
@@ -32,7 +32,7 @@ body {
     justify-content: center;
 }
 
-.header, .menu01, .menu02, #content, .sidebar, .footer {
+.header, .mainMenu, .subMenu01, #content, .sidebar, .footer {
     border: 1px solid #2C3E50;
     border-radius: 0.2em;
 }
@@ -49,18 +49,22 @@ body {
     padding-top: 0.5em;
 }
 
-.menu02 > *, .menu01 > * {
+.subMenu01 > *, .mainMenu > * {
     margin: 0.5em;
 }
 
-.menu01 {
-    grid-area: menu01;
+.mainMenu {
+    grid-area: mainMenu;
     padding: 0.5em;
     background-color: lightgrey;
 }
 
-.menu02 {
-    grid-area: menu02;
+#btnLogin, #btnLogout, #drpSelectStyle {
+    width: 135px;
+}
+
+.subMenu01 {
+    grid-area: subMenu01;
     padding: 0.5em;
     background-color: lightgrey;
 }
@@ -129,7 +133,15 @@ List notes form (id="list-notes-template")
     grid-area: listBtnEdit;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;;
+    margin: 0 0.5em;
+}
+.listBtnDelete {
+    grid-area: listBtnEdit;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin: 0 0.5em;
 }
 
 /*-----------------------------------------------------------------------------

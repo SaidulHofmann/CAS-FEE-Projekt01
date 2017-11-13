@@ -6,9 +6,8 @@
  * Author: Saidul Hofmann
  */
 
-import {Note} from '../services/coreTypes.js';
-import {LocationEnum, SortFieldEnum} from "../services/coreTypes.js";
-import {RestClient} from "../services/restClient.js";
+import { Note } from '../services/coreTypes.js';
+import { LocationEnum } from "../services/coreTypes.js";
 
 
 export class EditNoteController {

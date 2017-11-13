@@ -8,7 +8,7 @@ export class RestClient {
     }
 
     isLoggedIn(objUser) {
-        return (objUser && objUser.passwortHash) ? true: false;
+        return !!(objUser && objUser.passwortHash);
     }
 
     async login(strEmail, strPassword) {
@@ -33,6 +33,11 @@ export class RestClient {
         this.tempStorage.setValue(objUser.email, objUser);
     }
 
+
+    saveStyleSheet(strStyleSheetStorageName, strStyleSheet){
+        this.tempStorage.saveData(strStyleSheetStorageName, strStyleSheet);
+    }
+
     loadStylesheet(strStyleSheetStorageName){
         return this.tempStorage.loadStylesheet(strStyleSheetStorageName);
     }
@@ -50,6 +55,10 @@ export class RestClient {
         return requestAsync("GET", `/notes/${strNoteId}`, undefined, {authorization: "Bearer " + objUser.passwortHash});
     }
 
+    deleteNote(objUser, objNote) {
+        return requestAsync("DELETE", `/notes/${objNote._id}`, undefined, {authorization: "Bearer " + objUser.passwortHash});
+    }
+
     async setNotesStateFinished(objUser, strNoteId, boolFinished){
         let note = await this.getNote(objUser, strNoteId);
         if(note){
@@ -60,5 +69,6 @@ export class RestClient {
             throw "Das Notiz Objekt '" +strNoteId +"' konnte nicht gefunden werden.";
         }
     }
+
 
 }

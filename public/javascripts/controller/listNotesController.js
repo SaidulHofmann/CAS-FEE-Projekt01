@@ -12,7 +12,6 @@ export class ListNotesController {
 
     constructor(objIndexController) {
         this.indexCtr = objIndexController;
-        this.model = objIndexController.model;
         this.restClient = objIndexController.restClient;
         this.init();
     }
@@ -56,7 +55,7 @@ export class ListNotesController {
         return document.getElementById('btnFilterByFinished');
     }
     getMainBubbleEvents() {
-        return document.querySelector("main");
+        return document.querySelector("#content");
     }
 
     //-------------------------------------------------------------------------
@@ -106,6 +105,9 @@ export class ListNotesController {
         else if (event.target.dataset.editNoteId) {
             this.onMainBubbleEvents_editNoteId(event);
         }
+        else if (event.target.dataset.deleteNoteId) {
+            this.onMainBubbleEvents_deleteNoteId(event);
+        }
     }
 
     onMainBubbleEvents_finishNoteId(event) {
@@ -119,13 +121,32 @@ export class ListNotesController {
         this.indexCtr.renderPartialView(LocationEnum.EDIT_NOTE, note);
     }
 
+    async onMainBubbleEvents_deleteNoteId(event) {
+        // let note = await this.restClient.getNote(this.indexCtr.currentUser, event.target.dataset.editNoteId) ;
+        // this.indexCtr.renderPartialView(LocationEnum.EDIT_NOTE, note);
+        let note = await this.restClient.getNote(this.indexCtr.currentUser, event.target.dataset.deleteNoteId);
+        if (!note) {
+            return
+        }
+        let noteDescription = `Id: ${note._id}\nTitel: ${note.title}`;
+        let displayText = `Soll die Notiz wirklich gelöscht werden ?\n\n` + noteDescription;
+
+        let boolHasConfirmed = confirm(displayText);
+        if (boolHasConfirmed == true) {
+            let deleteCount = await this.restClient.deleteNote(this.indexCtr.currentUser, note);
+            console.log("Notiz wurde gelöscht:\n" + noteDescription);
+            console.log("Anzahl gelöschter Einträge: " + deleteCount);
+            this.renderUI();
+        }
+    }
+
     //-------------------------------------------------------------------------
     // Additional Methods
     //-------------------------------------------------------------------------
 
-    renderUI(objUser) {
-        if (objUser && objUser.passwortHash) {
-            this.restClient.getNotes(objUser, this.getQueryString()).then(arrNotes => {
+    renderUI() {
+        if (this.indexCtr.currentUser && this.indexCtr.currentUser.passwortHash) {
+            this.restClient.getNotes(this.indexCtr.currentUser, this.getQueryString()).then(arrNotes => {
                 this.setContent(arrNotes);
                 this.addEventHandlers();
             });
