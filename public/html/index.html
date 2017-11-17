@@ -36,17 +36,15 @@
         <!-- Sub Menu -->
 
         <script id="subMenu01-template" type="text/x-handlebars-template">
-            <div id ="sortAndFilterButtons">
-                <button id="btnSortByFinishDate" class="orderButtons" type="button">Nach Abschlussdatum</button>
-                <button id="btnSortByCreateDate" class="orderButtons" type="button">Nach Erstelldatum</button>
-                <button id="btnSortByImportance" class="orderButtons" type="button">Nach Wichtigkeit</button>
-                <button id="btnFilterByFinished" class="filterButtons" type="button">Abgeschlossene</button>
-            </div>
+            <button id="btnSortByFinishDate" class="orderButtons" type="button">Nach Abschlussdatum</button>
+            <button id="btnSortByCreateDate" class="orderButtons" type="button">Nach Erstelldatum</button>
+            <button id="btnSortByImportance" class="orderButtons" type="button">Nach Wichtigkeit</button>
+            <button id="btnFilterByFinished" class="filterButtons" type="button">Abgeschlossene</button>
         </script>
 
         <!-- Template for listing notes. -->
 
-        <script id="list-notes-template" type="text/x-handlebars-template">
+        <script id="note-list-template" type="text/x-handlebars-template">
             {{#each notes}}
             <div class="note-list-item">
                 <div class="listFinishDate">
@@ -58,20 +56,24 @@
                     <p>{{this.title}}</p>
                 </div>
                 <div class="listImportance">
-                    <span>Wichtigkeit:</span>
+                    <span>Priorität:</span>
                     <p>{{this.importance}}</p>
                 </div>
-                <div class="listFinished">
+                <div class="listIsFinished">
                     <span>
-                        <input type="checkbox" data-finish-note-id="{{this._id}}" {{#if this.finished }} checked{{/if}} />Erledigt
+                        <input type="checkbox" disabled readonly {{#if this.isFinished }} checked{{/if}} />Erledigt
                     </span>
                 </div>
+                <div class="listCreateDate">
+                    <span>Erstellt am:</span>
+                    <p>{{this.createDate}}</p>
+                </div>
                 <textarea class="listDescription" readonly>{{this.description}}</textarea>
+                <div class="list_Id">
+                    <span>Id: {{this._id}}</span>
+                </div>
                 <div class="listBtnEdit">
                     <button type="button" data-edit-note-id="{{this._id}}">Ändern</button>
-                </div>
-                <div class="listBtnDelete">
-                    <button type="button" data-delete-note-id="{{this._id}}">Löschen</button>
                 </div>
             </div>
             <hr>
@@ -80,61 +82,64 @@
 
         <!-- Template for adding and editing notes. -->
 
-        <script id="edit-note-template" type="text/x-handlebars-template">
-            <div id="note-edit-item">
-                <div class="lblInpId">
-                    <label for="inp_id" hidden>Id</label>
+        <script id="note-edit-template" type="text/x-handlebars-template">
+            <form id="note-edit-form">
+                <fieldset>
+                    <br/>
+                    <legend>Notiz Details:</legend>
+                    <div class="form-row">
+                        <label id="lblInpTitle" for="inpTitle">Titel</label>
+                        <input id="inpTitle" type="text" value="{{this.title}}" required/>
+                    </div>
+                    <div class="form-row">
+                        <label id="lblTxaDescription" for="txaDescription">Beschreibung</label>
+                        <textarea id="txaDescription" class="txaDescription" rows="4" cols="50" required minlength="5" maxlength="256">{{this.description}}</textarea>
+                    </div>
+                    <div class="form-row">
+                        <label id="lblFrmImportance" for="frmImportance">Priorität</label>
+                        <div>
+                            <form id="frmImportance">
+                                <input id="inpImportance1" type="radio" name="importance" value="1" {{#ifCond  this.importance '==' '1'}} checked{{/ifCond}}/>1
+                                <input id="inpImportance2" type="radio" name="importance" value="2" {{#ifCond  this.importance '==' '2'}} checked{{/ifCond}}/>2
+                                <input id="inpImportance3" type="radio" name="importance" value="3" {{#ifCond  this.importance '==' '3'}} checked{{/ifCond}}/>3
+                                <input id="inpImportance4" type="radio" name="importance" value="4" {{#ifCond  this.importance '==' '4'}} checked{{/ifCond}}/>4
+                                <input id="inpImportance5" type="radio" name="importance" value="5" {{#ifCond  this.importance '==' '5'}} checked{{/ifCond}}/>5
+                            </form>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label id="lblInpFinishDate" for="inpFinishDate">Erledigt bis</label>
+                        <input id="inpFinishDate" type="date" value="{{this.finishDate}}"/>
+                    </div>
+                    <div class="form-row">
+                        <label id="lblInpIsFinished" for="inpIsFinished">Bereits erledigt</label>
+                        <div>
+                            <input id="inpIsFinished" type="checkbox" value="{{this.isFinished}}" {{#if this.isFinished }} checked{{/if}} />
+                        </div>
+                    </div>
+                </fieldset>
+                <br/><br/><br/>
+                <fieldset>
+                    <legend>Info zur Notiz:</legend>
+                <div class="form-row">
+                    <label id="lblInp_id" for="inp_id">Id</label>
+                    <input id="inp_id" type="text" value="{{this._id}}" readonly/>
                 </div>
-                <div class="inpId">
-                    <input type="text" id="inp_id" value="{{this._id}}" hidden/>
+                <div class="form-row">
+                    <label id="lblInpCreatedBy" for="inpCreatedBy">Erstellt von</label>
+                    <input id="inpCreatedBy" type="text" value="{{this.createdBy}}" readonly/>
                 </div>
-                <div class="lblCreatedBy">
-                    <label for="inpCreatedBy" hidden>Erstellt von</label>
+                <div class="form-row">
+                    <label id="lblInpCreateDate" for="inpCreateDate">Erstellt am</label>
+                    <input id="inpCreateDate" type="date" value="{{this.createDate}}" readonly/>
                 </div>
-                <div class="inpCreatedBy">
-                    <input type="text" id="inpCreatedBy" value="{{this.createdBy}}" hidden/>
-                </div>
-                <div class="lblCreateDate">
-                    <label for="inpCreateDate" hidden>Erstellt am</label>
-                </div>
-                <div class="inpCreateDate">
-                    <input type="date" id="inpCreateDate" value="{{this.createDate}}" hidden/>
-                </div>
-                <div class="lblInpTitle">
-                    <label for="inpTitle">Titel</label>
-                </div>
-                <div class="inpTitle">
-                    <input type="text" id="inpTitle" value="{{this.title}}"/>
-                </div>
-                <div class="lblTxaDescription">
-                    <label for="txaDescription">Beschreibung</label>
-                </div>
-                <textarea class="txaDescription" id="txaDescription">{{this.description}}</textarea>
-                <div class="lblFrmImportance">
-                    <label for="frmImportance">Wichtigkeit</label>
-                </div>
-                <div class="frmImportance">
-                    <form id="frmImportance">
-                        <input type="radio" name="importance" id="inpImportance1" value="1" {{#ifCond  this.importance '==' '1'}} checked{{/ifCond}}/>1
-                        <input type="radio" name="importance" id="inpImportance2" value="2" {{#ifCond  this.importance '==' '2'}} checked{{/ifCond}}/>2
-                        <input type="radio" name="importance" id="inpImportance3" value="3" {{#ifCond  this.importance '==' '3'}} checked{{/ifCond}}/>3
-                        <input type="radio" name="importance" id="inpImportance4" value="4" {{#ifCond  this.importance '==' '4'}} checked{{/ifCond}}/>4
-                        <input type="radio" name="importance" id="inpImportance5" value="5" {{#ifCond  this.importance '==' '5'}} checked{{/ifCond}}/>5
-                    </form>
-                </div>
-                <div class="lblInpFinishDate">
-                    <label for="inpFinishDate">Erledigt bis</label>
-                </div>
-                <div class="inpFinishDate">
-                    <input type="date" id="inpFinishDate" value="{{this.finishDate}}"/>
-                </div>
-                <div class="btnSaveNote">
-                    <button id="btnSaveNote">Speichern</button>
-                </div>
-                <div class="btnCancelNote">
+                </fieldset>
+                <div class="form-actions">
+                    <button id="btnSaveNote"/>Speichern</button>
+                    <button id="btnDeleteNote"/>Löschen</button>
                     <button id="btnCancelNote">Abbrechen</button>
                 </div>
-            </div>
+            </form>
         </script>
 
         <!-- Scripts -->

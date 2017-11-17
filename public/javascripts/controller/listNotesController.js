@@ -6,7 +6,8 @@
  * Author: Saidul Hofmann
  */
 
-import { LocationEnum, SortFieldEnum, FilterFieldEnum } from "../services/coreTypes.js";
+import { LocationEnum, SortFieldEnum, FilterFieldEnum, Note } from "../services/coreTypes.js";
+
 
 export class ListNotesController {
 
@@ -17,8 +18,8 @@ export class ListNotesController {
     }
 
     init() {
-        let listNotesTemplate = document.getElementById("list-notes-template").innerHTML;
-        this.fnListNotesRenderer = Handlebars.compile(listNotesTemplate);
+        let noteListTemplate = document.getElementById("note-list-template").innerHTML;
+        this.fnLNoteListRenderer = Handlebars.compile(noteListTemplate);
     }
 
     //-------------------------------------------------------------------------
@@ -40,7 +41,7 @@ export class ListNotesController {
     }
 
     setContent(arrNotes) {
-        document.querySelector("#content").innerHTML = this.fnListNotesRenderer({notes: arrNotes});
+        document.querySelector("#content").innerHTML = this.fnLNoteListRenderer({notes: arrNotes});
     }
     getBtnSortByFinishDate() {
         return document.getElementById('btnSortByFinishDate');
@@ -99,44 +100,17 @@ export class ListNotesController {
     }
 
     onMainBubbleEvents(event) {
-        if (event.target.dataset.finishNoteId) {
-            this.onMainBubbleEvents_finishNoteId(event);
-        }
-        else if (event.target.dataset.editNoteId) {
+        if (event.target.dataset.editNoteId) {
             this.onMainBubbleEvents_editNoteId(event);
         }
-        else if (event.target.dataset.deleteNoteId) {
-            this.onMainBubbleEvents_deleteNoteId(event);
-        }
-    }
-
-    onMainBubbleEvents_finishNoteId(event) {
-        this.restClient.setNotesStateFinished(this.indexCtr.currentUser,
-            event.target.dataset.finishNoteId,
-            event.target.checked);
     }
 
     async onMainBubbleEvents_editNoteId(event) {
         let note = await this.restClient.getNote(this.indexCtr.currentUser, event.target.dataset.editNoteId) ;
-        this.indexCtr.renderPartialView(LocationEnum.EDIT_NOTE, note);
-    }
-
-    async onMainBubbleEvents_deleteNoteId(event) {
-        // let note = await this.restClient.getNote(this.indexCtr.currentUser, event.target.dataset.editNoteId) ;
-        // this.indexCtr.renderPartialView(LocationEnum.EDIT_NOTE, note);
-        let note = await this.restClient.getNote(this.indexCtr.currentUser, event.target.dataset.deleteNoteId);
-        if (!note) {
-            return
-        }
-        let noteDescription = `Id: ${note._id}\nTitel: ${note.title}`;
-        let displayText = `Soll die Notiz wirklich gelöscht werden ?\n\n` + noteDescription;
-
-        let boolHasConfirmed = confirm(displayText);
-        if (boolHasConfirmed == true) {
-            let deleteCount = await this.restClient.deleteNote(this.indexCtr.currentUser, note);
-            console.log("Notiz wurde gelöscht:\n" + noteDescription);
-            console.log("Anzahl gelöschter Einträge: " + deleteCount);
-            this.renderUI();
+        if(note) {
+            this.indexCtr.renderPartialView(LocationEnum.EDIT_NOTE, note);
+        } else {
+            alert("Die zu editierende Notiz konnte nicht geladen werden.");
         }
     }
 

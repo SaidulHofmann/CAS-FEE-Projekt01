@@ -1,4 +1,5 @@
 "use strict";
+
 /*
 Project: HSR CAS FEE 2017, Project 01 - notes application.
 Content: Data access helper for the notes application.
@@ -10,7 +11,7 @@ Author: Saidul Hofmann
  * Helper class for persisting and retrieving data from local storage.
  */
 export class TemporaryStorage {
-    constructor(){
+    constructor() {
     }
 
     setValue(name, value) {
@@ -26,7 +27,7 @@ export class TemporaryStorage {
         return JSON.parse(localStorage.getItem(name) || null);
     }
 
-    loadNotes(strStorageName){
+    loadNotes(strStorageName) {
         try {
             this.validateStorrageName(strStorageName);
 
@@ -37,12 +38,12 @@ export class TemporaryStorage {
                 return [];
             }
         }
-        catch (error){
+        catch (error) {
             console.log(error.message);
         }
     }
 
-    loadStylesheet(strStorageName){
+    loadStylesheet(strStorageName) {
         try {
             this.validateStorrageName(strStorageName);
 
@@ -53,7 +54,7 @@ export class TemporaryStorage {
                 return "";
             }
         }
-        catch (error){
+        catch (error) {
             console.log(error.message);
         }
     }
@@ -69,13 +70,13 @@ export class TemporaryStorage {
             this.validateStorage(storage);
             localStorage.setItem(strStorageName, JSON.stringify(storage));
         }
-        catch (error){
+        catch (error) {
             console.log(error.message);
         }
     }
 
-    validateStorrageName(strStorageName){
-        if(typeof strStorageName !== "string") {
+    validateStorrageName(strStorageName) {
+        if (typeof strStorageName !== "string") {
             throw `Die Bezeichnung des Speichermediums '${strStorageName.toString()}' ist nicht vom Datentyp Strig.`;
         }
         if (!strStorageName) {
@@ -84,8 +85,8 @@ export class TemporaryStorage {
         return true;
     }
 
-    validateStorage(storage){
-        if(typeof storage === "function" ){
+    validateStorage(storage) {
+        if (typeof storage === "function") {
             throw `Es wurde eine Funktion als zu speicherndes Objekt übergeben '${storage.toString()}'.`;
         }
         return true;

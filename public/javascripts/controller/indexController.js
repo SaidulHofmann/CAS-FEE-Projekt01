@@ -6,10 +6,10 @@
  * Author: Saidul Hofmann
  */
 
-import { LocationEnum } from "../services/coreTypes.js";
-import { EditNoteController } from "./editNoteController.js";
-import { ListNotesController } from "./listNotesController.js";
-import { RestClient } from "../services/restClient.js";
+import {LocationEnum} from "../services/coreTypes.js";
+import {EditNoteController} from "./editNoteController.js";
+import {ListNotesController} from "./listNotesController.js";
+import {RestClient} from "../services/restClient.js";
 
 
 /**
@@ -164,6 +164,9 @@ class IndexController {
     }
 
     onBtnCreateNewNote_Click() {
+        if(!this.restClient.isLoggedIn(this.currentUser)){
+            return;
+        }
         this.renderPartialView(LocationEnum.EDIT_NOTE);
     }
 
@@ -223,7 +226,6 @@ class IndexController {
         this.renderLoginView()
     }
 }
-
 
 
 //-------------------------------------------------------------------------

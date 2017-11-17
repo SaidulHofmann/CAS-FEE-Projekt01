@@ -1,9 +1,9 @@
 import {TemporaryStorage} from './temporaryStorage.js';
-import { requestAsync } from '../utils/ajaxHelper.js';
-import { User } from './coreTypes.js';
+import {requestAsync} from '../utils/ajaxHelper.js';
+import {User} from './coreTypes.js';
 
 export class RestClient {
-    constructor(){
+    constructor() {
         this.tempStorage = new TemporaryStorage();
     }
 
@@ -34,16 +34,16 @@ export class RestClient {
     }
 
 
-    saveStyleSheet(strStyleSheetStorageName, strStyleSheet){
+    saveStyleSheet(strStyleSheetStorageName, strStyleSheet) {
         this.tempStorage.saveData(strStyleSheetStorageName, strStyleSheet);
     }
 
-    loadStylesheet(strStyleSheetStorageName){
+    loadStylesheet(strStyleSheetStorageName) {
         return this.tempStorage.loadStylesheet(strStyleSheetStorageName);
     }
 
     async saveNote(objUser, objNote) {
-        return requestAsync("POST", "/notes/", { note: objNote },
+        return requestAsync("POST", "/notes/", {note: objNote},
             {authorization: "Bearer " + objUser.passwortHash});
     }
 
@@ -59,16 +59,14 @@ export class RestClient {
         return requestAsync("DELETE", `/notes/${objNote._id}`, undefined, {authorization: "Bearer " + objUser.passwortHash});
     }
 
-    async setNotesStateFinished(objUser, strNoteId, boolFinished){
+    async setNotesStateFinished(objUser, strNoteId, boolFinished) {
         let note = await this.getNote(objUser, strNoteId);
-        if(note){
+        if (note) {
             note.finishDate = new Date().toISOString().substr(0, 10);
             note.isFinished = boolFinished;
             this.saveNote(objUser, note);
-        } else{
-            throw "Das Notiz Objekt '" +strNoteId +"' konnte nicht gefunden werden.";
+        } else {
+            throw "Das Notiz Objekt '" + strNoteId + "' konnte nicht gefunden werden.";
         }
     }
-
-
 }

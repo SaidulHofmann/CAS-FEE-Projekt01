@@ -1,4 +1,3 @@
-
 export function requestAsync(metod, url, data, headers) {
     return $.ajax({
         dataType: "json",
@@ -6,6 +5,6 @@ export function requestAsync(metod, url, data, headers) {
         headers: headers,
         method: metod,
         url: url,
-        data: data ?  JSON.stringify(data) : undefined
+        data: data ? JSON.stringify(data) : undefined
     });
 }
