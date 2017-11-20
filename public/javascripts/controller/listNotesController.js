@@ -19,7 +19,7 @@ export class ListNotesController {
 
     init() {
         let noteListTemplate = document.getElementById("note-list-template").innerHTML;
-        this.fnLNoteListRenderer = Handlebars.compile(noteListTemplate);
+        this.fnNoteListRenderer = Handlebars.compile(noteListTemplate);
     }
 
     //-------------------------------------------------------------------------
@@ -41,7 +41,7 @@ export class ListNotesController {
     }
 
     setContent(arrNotes) {
-        document.querySelector("#content").innerHTML = this.fnLNoteListRenderer({notes: arrNotes});
+        document.querySelector("#content").innerHTML = this.fnNoteListRenderer({notes: arrNotes});
     }
     getBtnSortByFinishDate() {
         return document.getElementById('btnSortByFinishDate');
@@ -103,6 +103,9 @@ export class ListNotesController {
         if (event.target.dataset.editNoteId) {
             this.onMainBubbleEvents_editNoteId(event);
         }
+        if (event.target.dataset.slideNote) {
+            this.onMainBubbleEvents_slideNote(event);
+        }
     }
 
     async onMainBubbleEvents_editNoteId(event) {
@@ -112,6 +115,11 @@ export class ListNotesController {
         } else {
             alert("Die zu editierende Notiz konnte nicht geladen werden.");
         }
+    }
+    onMainBubbleEvents_slideNote(event) {
+        console.log("onMainBubbleEvents_slideNote().", event.target);
+        console.log("selected node: ", event.target.nextElementSibling);
+        $(event.target.nextElementSibling).slideToggle(500);
     }
 
     //-------------------------------------------------------------------------
@@ -123,6 +131,8 @@ export class ListNotesController {
             this.restClient.getNotes(this.indexCtr.currentUser, this.getQueryString()).then(arrNotes => {
                 this.setContent(arrNotes);
                 this.addEventHandlers();
+                this.updateFilterIcon();
+                this.updateSortIcon();
             });
         } else {
             this.setContent("");
@@ -132,6 +142,7 @@ export class ListNotesController {
     toggleFilterByFinished() {
         this.setIsFilteredByFinished(!this.getIsFilteredByFinished());
         this.restClient.saveUser(this.indexCtr.currentUser);
+        this.updateFilterIcon();
         this.renderUI();
     }
 
@@ -143,6 +154,7 @@ export class ListNotesController {
             this.setIsSortDirectionAsc(true);
         }
         this.restClient.saveUser(this.indexCtr.currentUser);
+        this.updateSortIcon();
         this.renderUI();
     }
 
@@ -153,4 +165,28 @@ export class ListNotesController {
         return queryString;
     }
 
+    updateSortIcon() {
+        $("#btnSortByFinishDate, #btnSortByCreateDate, #btnSortByImportance").removeClass("icon-up icon-down active");
+        switch (this.getCurrentSortField()) {
+            case SortFieldEnum.FINISH_DATE:
+                this.updateSortIconForButton("#btnSortByFinishDate", this.getIsSortDirectionAsc());
+                break;
+            case SortFieldEnum.CREATE_DATE:
+                this.updateSortIconForButton("#btnSortByCreateDate", this.getIsSortDirectionAsc());
+                break;
+            case SortFieldEnum.IMPORTANCE:
+                this.updateSortIconForButton("#btnSortByImportance", this.getIsSortDirectionAsc());
+                break;
+        }
+    }
+
+    updateSortIconForButton(buttonId, isSortDirectionAsc) {
+        $(buttonId).toggleClass("active", true);
+        $(buttonId).toggleClass("icon-down", !isSortDirectionAsc);
+        $(buttonId).toggleClass("icon-up", isSortDirectionAsc);
+    }
+
+    updateFilterIcon() {
+        $("#btnFilterByFinished").toggleClass("icon-filter active", (this.getIsFilteredByFinished()));
+    }
 }

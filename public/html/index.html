@@ -8,6 +8,8 @@
 
     <body>
 
+        <!-- Main Page -->
+
         <header class="header"></header>
         <nav class="mainMenu"></nav>
         <nav class="subMenu01"></nav>
@@ -20,26 +22,26 @@
         <!-- Main menu -->
 
         <script id="mainMenu-template" type="text/x-handlebars-template">
-            <input type="button" value="Login" id="btnLogin" class="logged-out">
-            <input type="button" value="Logout" id="btnLogout" class="logged-in">
-
-            <button type="button" id="btnCreateNewNote">Neue Notiz erstellen</button>
-
+            <input type="button" value="Login" id="btnLogin" class="button logged-out">
+            <input type="button" value="Logout" id="btnLogout" class="button logged-in">
+            <button type="button" id="btnCreateNewNote" class="button logged-in">Neue Notiz erstellen</button>
             <select id="drpSelectStyle" name="drpSelectStyle">
-                <option value="../stylesheets/default.css">Standard</option>
-                <option value="../stylesheets/style01.css">Style 01</option>
-                <option value="../stylesheets/style02.css">Style 02</option>
-                <option value="../stylesheets/style03.css">Style 03</option>
+                <option value="../stylesheets/default.css">Zero Style</option>
+                <option value="../stylesheets/style01.css">Business style</option>
+                <option value="../stylesheets/style02.css">Nature style</option>
+                <option value="../stylesheets/style03.css">Orange style</option>
             </select>
         </script>
 
         <!-- Sub Menu -->
 
         <script id="subMenu01-template" type="text/x-handlebars-template">
-            <button id="btnSortByFinishDate" class="orderButtons" type="button">Nach Abschlussdatum</button>
-            <button id="btnSortByCreateDate" class="orderButtons" type="button">Nach Erstelldatum</button>
-            <button id="btnSortByImportance" class="orderButtons" type="button">Nach Wichtigkeit</button>
-            <button id="btnFilterByFinished" class="filterButtons" type="button">Abgeschlossene</button>
+            <div  class="logged-in">
+                <button id="btnSortByFinishDate" class="button orderButtons" type="button">Nach Abschlussdatum</button>
+                <button id="btnSortByCreateDate" class="button orderButtons" type="button">Nach Erstelldatum</button>
+                <button id="btnSortByImportance" class="button orderButtons" type="button">Nach Wichtigkeit</button>
+                <button id="btnFilterByFinished" class="button filterButtons" type="button">Abgeschlossene</button>
+            </div>
         </script>
 
         <!-- Template for listing notes. -->
@@ -49,15 +51,28 @@
             <div class="note-list-item">
                 <div class="listFinishDate">
                     <span>Erledigt bis:</span>
-                    <p>{{this.finishDate}}</p>
+                    <p>{{formatDate this.finishDate}}</p>
                 </div>
                 <div class="listTitle">
                     <span>Titel:</span>
                     <p>{{this.title}}</p>
                 </div>
                 <div class="listImportance">
-                    <span>Priorität:</span>
-                    <p>{{this.importance}}</p>
+                    <span>Wichtigkeit:</span>
+                    <div class="ratingForm">
+                        <form class="rating-flash rating-disabled">
+                            <input id="listInpImportance1" disabled="disabled" type="radio" name="importance"  value="5" {{#ifCond  this.importance '==' '5'}} checked{{/ifCond}}/>
+                            <label for="listInpImportance1"><img src="../images/flash01.png" alt="Flash"/></label>
+                            <input id="listInpImportance2" disabled="disabled" type="radio" name="importance"  value="4" {{#ifCond  this.importance '==' '4'}} checked{{/ifCond}}/>
+                            <label for="inpImportance2"><img src="../images/flash01.png" alt="Flash"/></label>
+                            <input id="listInpImportance3" disabled="disabled" type="radio" name="importance"  value="3" {{#ifCond  this.importance '==' '3'}} checked{{/ifCond}}/>
+                            <label for="listInpImportance3"><img src="../images/flash01.png" alt="Flash"/></label>
+                            <input id="listInpImportance4" disabled="disabled" type="radio" name="importance"  value="2" {{#ifCond  this.importance '==' '2'}} checked{{/ifCond}}/>
+                            <label for="listInpImportance4"><img src="../images/flash01.png" alt="Flash"/></label>
+                            <input id="listInpImportance5" disabled="disabled" type="radio" name="importance"  value="1" {{#ifCond  this.importance '==' '1'}} checked{{/ifCond}}/>
+                            <label for="listInpImportance5"><img src="../images/flash01.png" alt="Flash"/></label>
+                        </form>
+                    </div>
                 </div>
                 <div class="listIsFinished">
                     <span>
@@ -66,14 +81,19 @@
                 </div>
                 <div class="listCreateDate">
                     <span>Erstellt am:</span>
-                    <p>{{this.createDate}}</p>
+                    <p>{{formatDate this.createDate}}</p>
                 </div>
-                <textarea class="listDescription" readonly>{{this.description}}</textarea>
+                <div class="listDescription">
+                    <div class ="descriptionSliderHead" data-slide-note="slideNote">
+                        <span>Hier klicken um Details anzeigen oder zu verbergen.</span>
+                    </div>
+                    <textarea class="txaDescription" readonly>{{this.description}}</textarea>
+                </div>
                 <div class="list_Id">
                     <span>Id: {{this._id}}</span>
                 </div>
                 <div class="listBtnEdit">
-                    <button type="button" data-edit-note-id="{{this._id}}">Ändern</button>
+                    <button type="button" class="button" data-edit-note-id="{{this._id}}">Ändern</button>
                 </div>
             </div>
             <hr>
@@ -84,9 +104,6 @@
 
         <script id="note-edit-template" type="text/x-handlebars-template">
             <form id="note-edit-form">
-                <fieldset>
-                    <br/>
-                    <legend>Notiz Details:</legend>
                     <div class="form-row">
                         <label id="lblInpTitle" for="inpTitle">Titel</label>
                         <input id="inpTitle" type="text" value="{{this.title}}" required/>
@@ -96,14 +113,19 @@
                         <textarea id="txaDescription" class="txaDescription" rows="4" cols="50" required minlength="5" maxlength="256">{{this.description}}</textarea>
                     </div>
                     <div class="form-row">
-                        <label id="lblFrmImportance" for="frmImportance">Priorität</label>
-                        <div>
+                        <label id="lblFrmImportance" for="frmImportance">Wichtigkeit</label>
+                        <div class="rating-flash">
                             <form id="frmImportance">
-                                <input id="inpImportance1" type="radio" name="importance" value="1" {{#ifCond  this.importance '==' '1'}} checked{{/ifCond}}/>1
-                                <input id="inpImportance2" type="radio" name="importance" value="2" {{#ifCond  this.importance '==' '2'}} checked{{/ifCond}}/>2
-                                <input id="inpImportance3" type="radio" name="importance" value="3" {{#ifCond  this.importance '==' '3'}} checked{{/ifCond}}/>3
-                                <input id="inpImportance4" type="radio" name="importance" value="4" {{#ifCond  this.importance '==' '4'}} checked{{/ifCond}}/>4
-                                <input id="inpImportance5" type="radio" name="importance" value="5" {{#ifCond  this.importance '==' '5'}} checked{{/ifCond}}/>5
+                                <input id="inpImportance1" type="radio" name="importance" value="5" {{#ifCond  this.importance '==' '5'}} checked{{/ifCond}}/>
+                                <label for="inpImportance1"><img src="../images/flash01.png" alt="Flash"/></label>
+                                <input id="inpImportance2" type="radio" name="importance" value="4" {{#ifCond  this.importance '==' '4'}} checked{{/ifCond}}/>
+                                <label for="inpImportance2"><img src="../images/flash01.png" alt="Flash"/></label>
+                                <input id="inpImportance3" type="radio" name="importance" value="3" {{#ifCond  this.importance '==' '3'}} checked{{/ifCond}}/>
+                                <label for="inpImportance3"><img src="../images/flash01.png" alt="Flash"/></label>
+                                <input id="inpImportance4" type="radio" name="importance" value="2" {{#ifCond  this.importance '==' '2'}} checked{{/ifCond}}/>
+                                <label for="inpImportance4"><img src="../images/flash01.png" alt="Flash"/></label>
+                                <input id="inpImportance5" type="radio" name="importance" value="1" {{#ifCond  this.importance '==' '1'}} checked{{/ifCond}}/>
+                                <label for="inpImportance5"><img src="../images/flash01.png" alt="Flash"/></label>
                             </form>
                         </div>
                     </div>
@@ -117,10 +139,7 @@
                             <input id="inpIsFinished" type="checkbox" value="{{this.isFinished}}" {{#if this.isFinished }} checked{{/if}} />
                         </div>
                     </div>
-                </fieldset>
                 <br/><br/><br/>
-                <fieldset>
-                    <legend>Info zur Notiz:</legend>
                 <div class="form-row">
                     <label id="lblInp_id" for="inp_id">Id</label>
                     <input id="inp_id" type="text" value="{{this._id}}" readonly/>
@@ -133,11 +152,10 @@
                     <label id="lblInpCreateDate" for="inpCreateDate">Erstellt am</label>
                     <input id="inpCreateDate" type="date" value="{{this.createDate}}" readonly/>
                 </div>
-                </fieldset>
                 <div class="form-actions">
-                    <button id="btnSaveNote"/>Speichern</button>
-                    <button id="btnDeleteNote"/>Löschen</button>
-                    <button id="btnCancelNote">Abbrechen</button>
+                    <button id="btnSaveNote" class="button">Speichern</button>
+                    <button id="btnDeleteNote" class="button">Löschen</button>
+                    <button id="btnCancelNote" class="button">Abbrechen</button>
                 </div>
             </form>
         </script>
